@@ -39,11 +39,9 @@ public class GUIframe{
 	
 	private JPanel mainPanel;	//the main Panel will have sub panels
 	private JPanel canvasPanel;
-	private JPanel buttonsPanel;
-	
-	BufferedImage image;
-	
+	private JPanel buttonsPanel;	
 	private MyCanvas canvas;
+	private Engine engine;
 
 	public GUIframe(int width, int height) throws FileNotFoundException, IOException {
 	
@@ -57,7 +55,9 @@ public class GUIframe{
 		canvas.setBounds(0, 0, 300, 300);
 		canvas.setBackground(Color.WHITE);
 		
-		
+		//intialize engine
+		engine = new Engine();
+
 		//add buttonsPanel objects
 		
 		// - add buttons
@@ -76,7 +76,7 @@ public class GUIframe{
 		        if (ret == JFileChooser.APPROVE_OPTION) {
 		          File file = chooser.getSelectedFile();
 		          try {
-					image = ImageIO.read(new FileInputStream(file.toString()));
+		          	engine.loadImageFromFile(file);
 					canvas.repaint();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -170,8 +170,8 @@ public class GUIframe{
     	 
         @Override
         public void paint(Graphics g) {
-                if(image != null) {
-                	g.drawImage(image, 0, 0, this);
+                if(engine.hasImage()) {
+                	g.drawImage(engine.getImage(), 0, 0, this);
             	}
         }
     }
