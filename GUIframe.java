@@ -52,7 +52,7 @@ public class GUIframe{
 		
 		//add canvasPanel objects
         canvas = new MyCanvas();
-        image = ImageIO.read(new FileInputStream("C:/Users/Pranav/Pictures/doge.jpeg"));
+        //image = ImageIO.read(new FileInputStream("C:/Users/Pranav/Pictures/doge.jpeg"));
 		canvas.setSize(width, height);
 		canvas.setBounds(0, 0, 300, 300);
 		canvas.setBackground(Color.WHITE);
