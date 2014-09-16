@@ -77,6 +77,7 @@ public class GUIframe{
 		          File file = chooser.getSelectedFile();
 		          try {
 					image = ImageIO.read(new FileInputStream(file.toString()));
+					canvas.repaint();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -165,21 +166,13 @@ public class GUIframe{
 	    window.setVisible(true);
 	}
 
-	public void paint(Graphics g) {
-	
-	    g.setColor(Color.red);
-	    g.fillOval(20, 50, 100, 100);
-	    g.setColor(Color.blue);
-	    g.fillRect(100, 100, 100, 200);
-	}
-	
     class MyCanvas extends Canvas {
     	 
         @Override
         public void paint(Graphics g) {
-                super.paint(g);
-
-                g.drawImage(image, 0, 0, this);
+                if(image != null) {
+                	g.drawImage(image, 0, 0, this);
+            	}
         }
     }
 
