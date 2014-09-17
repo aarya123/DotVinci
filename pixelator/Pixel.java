@@ -1,18 +1,17 @@
 package pixelator;
 
-class Pixel{
+class Pixel {
 
 	private double x, y, red, green, blue;
 
 	public Pixel(double x, double y, double red, double green, double blue) {
-		super();
 		this.x = x;
 		this.y = y;
 		this.red = red;
 		this.green = green;
 		this.blue = blue;
 	}
-	
+
 	public double getRed() {
 		return red;
 	}
@@ -43,5 +42,5 @@ class Pixel{
 
 	public double getY() {
 		return y;
-	}	
+	}
 }
