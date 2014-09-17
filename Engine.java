@@ -7,6 +7,10 @@ import java.io.FileNotFoundException;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.SwingUtilities;
+import java.awt.Graphics;
+import java.awt.Canvas;
+
+
 
 public class Engine {
 
@@ -16,6 +20,7 @@ public class Engine {
 	private long startTime;
 	private long timeToRun;
 	private EngineClient engineClient;
+
 
 
 	public interface EngineClient {
@@ -71,6 +76,16 @@ public class Engine {
 		return startTime != -1;
 	}
 
+	public long getTimerRunLength() {
+		return System.currentTimeMillis() - startTime;
+	}
+
+	public void updateOutput(Graphics g, Canvas canvas) {
+		if (hasImage()) {
+			g.drawImage(getImage(), 0, 0, canvas);
+		}
+	}
+
 	class UpdateImage extends TimerTask {
 
 		@Override
@@ -84,8 +99,8 @@ public class Engine {
 
 			});
 
-			if(System.currentTimeMillis() - startTime >= timeToRun) {
-				System.out.println("timer end! " + (System.currentTimeMillis() - startTime));
+			if(getTimerRunLength() >= timeToRun) {
+				System.out.println("timer end! " + getTimerRunLength());
 				startTime = -1;
 				cancel();
 			}
