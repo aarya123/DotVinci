@@ -44,6 +44,7 @@ public class GUIframe{
 	BufferedImage image;
 	private MyCanvas canvas;
 	String suffices[];
+	private Engine engine;
 
 	public GUIframe(int width, int height) throws FileNotFoundException, IOException {
 	
@@ -52,12 +53,14 @@ public class GUIframe{
 		
 		//add canvasPanel objects
         canvas = new MyCanvas();
-        image = ImageIO.read(new FileInputStream("C:/Users/Pranav/Pictures/doge.jpeg"));
+        //image = ImageIO.read(new FileInputStream("C:/Users/Pranav/Pictures/doge.jpeg"));
 		canvas.setSize(width, height);
 		canvas.setBounds(0, 0, 300, 300);
 		canvas.setBackground(Color.WHITE);
 		
-		
+		//intialize engine
+		engine = new Engine();
+
 		//add buttonsPanel objects
 		
 		// - add buttons
@@ -91,6 +94,7 @@ public class GUIframe{
 		          File file = chooser.getSelectedFile();
 		          try {
 					image = ImageIO.read(new FileInputStream(file.toString()));
+		          	engine.loadImageFromFile(file);
 					canvas.repaint();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -180,19 +184,15 @@ public class GUIframe{
 	    window.setVisible(true);
 	}
 
-	public void paint(Graphics g) {
-	    g.setColor(Color.red);
-	    g.fillOval(20, 50, 100, 100);
-	    g.setColor(Color.blue);
-	    g.fillRect(100, 100, 100, 200);
-	}
-	
+
     class MyCanvas extends Canvas {
     	 
         @Override
         public void paint(Graphics g) {
-                super.paint(g);
-                g.drawImage(image, 0, 0, this);
+
+                if(engine.hasImage()) {
+                	g.drawImage(engine.getImage(), 0, 0, this);
+            	}
         }
     }
 
