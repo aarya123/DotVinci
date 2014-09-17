@@ -185,6 +185,9 @@ public class GUIframe{
 		startFilter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(image == null) {
+					return;
+				}
 				if(startTime == -1) {
 					startTime = System.currentTimeMillis();
 					long maxTimeToTake = 1000;
