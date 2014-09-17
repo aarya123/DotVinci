@@ -76,6 +76,10 @@ public class Engine {
 		return startTime != -1;
 	}
 
+	public long getTimerRunLength() {
+		return System.currentTimeMillis() - startTime;
+	}
+
 	public void updateOutput(Graphics g, Canvas canvas) {
 		if (hasImage()) {
 			g.drawImage(getImage(), 0, 0, canvas);
@@ -95,8 +99,8 @@ public class Engine {
 
 			});
 
-			if(System.currentTimeMillis() - startTime >= timeToRun) {
-				System.out.println("timer end! " + (System.currentTimeMillis() - startTime));
+			if(getTimerRunLength() >= timeToRun) {
+				System.out.println("timer end! " + getTimerRunLength());
 				startTime = -1;
 				cancel();
 			}
