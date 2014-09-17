@@ -35,6 +35,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JOptionPane;
 
 public class GUIframe{
 	
@@ -75,6 +76,10 @@ public class GUIframe{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				if(startTime != -1) {
+					JOptionPane.showMessageDialog(window, "Cannot open new image while timer is running");
+					return;
+				}
 				//open a JFilesChooser when the open button is clicked
 		        JFileChooser chooser = new JFileChooser();
 		        
@@ -186,6 +191,7 @@ public class GUIframe{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(image == null) {
+					JOptionPane.showMessageDialog(window, "Cannot start timer without an image open");
 					return;
 				}
 				if(startTime == -1) {
