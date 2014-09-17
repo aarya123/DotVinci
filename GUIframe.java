@@ -69,10 +69,8 @@ public class GUIframe implements Engine.EngineClient {
                         chooser.addChoosableFileFilter(filter);
                     }
                 }
-
-                // FileNameExtensionFilter filter = new
-                // FileNameExtensionFilter("c files", "c");
-                // chooser.addChoosableFileFilter(filter);
+                chooser.setFileFilter(new ImageFilter());
+                chooser.setAcceptAllFileFilterUsed(false);
                 int ret = chooser.showDialog(null, "Open file");
 
                 if (ret == JFileChooser.APPROVE_OPTION) {
