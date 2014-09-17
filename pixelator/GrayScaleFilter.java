@@ -1,6 +1,6 @@
 package pixelator;
 
-public class GrayScaleFilter implements IFilter{
+public class GrayScaleFilter implements IFilter {
 
 	static final double RED_MULTIPLE = 0.21;
 	static final double GREEN_MULTIPLE = 0.72;

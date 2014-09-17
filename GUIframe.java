@@ -37,11 +37,11 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JOptionPane;
 
-public class GUIframe{
-	
+public class GUIframe {
+
 	private JFrame window;
-	
-	private JPanel mainPanel;	//the main Panel will have sub panels
+
+	private JPanel mainPanel; // the main Panel will have sub panels
 	private JPanel canvasPanel;
 	private JPanel buttonsPanel;
 	BufferedImage image;
@@ -53,72 +53,78 @@ public class GUIframe{
 	private long startTime;
 	private long timeToRun;
 
-	public GUIframe(int width, int height) throws FileNotFoundException, IOException {
-	
+	public GUIframe(int width, int height) throws FileNotFoundException,
+			IOException {
+
 		window = new JFrame("Dot Vinci");
 		window.setSize(width, height);
-		
-		//add canvasPanel objects
-        canvas = new MyCanvas();
-        //image = ImageIO.read(new FileInputStream("C:/Users/Pranav/Pictures/doge.jpeg"));
+
+		// add canvasPanel objects
+		canvas = new MyCanvas();
+		// image = ImageIO.read(new
+		// FileInputStream("C:/Users/Pranav/Pictures/doge.jpeg"));
 		canvas.setSize(width, height);
 		canvas.setBounds(0, 0, 300, 300);
 		canvas.setBackground(Color.WHITE);
-		
-		//intialize engine
+
+		// intialize engine
 		engine = new Engine();
 
-		//add buttonsPanel objects
-		
+		// add buttonsPanel objects
+
 		// - add buttons
 		JButton openImage = new JButton("Open Image");
 		openImage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				if(startTime != -1) {
-					JOptionPane.showMessageDialog(window, "Cannot open new image while timer is running");
+
+				if (startTime != -1) {
+					JOptionPane.showMessageDialog(window,
+							"Cannot open new image while timer is running");
 					return;
 				}
-				//open a JFilesChooser when the open button is clicked
-		        JFileChooser chooser = new JFileChooser();
-		        
-		        // Get array of available formats (only once)
-		        if(suffices == null){	
-		        	suffices = ImageIO.getReaderFileSuffixes();
+				// open a JFilesChooser when the open button is clicked
+				JFileChooser chooser = new JFileChooser();
 
-		        	// Add a file filter for each one
-		        	for (int i = 0; i < suffices.length; i++) {
-		        		FileNameExtensionFilter filter = new FileNameExtensionFilter(suffices[i] + " files", suffices[i]);
-		        		System.out.println(suffices[i]+"\n");
-		        		chooser.addChoosableFileFilter(filter);
-		        	}
-		        }
+				// Get array of available formats (only once)
+				if (suffices == null) {
+					suffices = ImageIO.getReaderFileSuffixes();
 
-		        //FileNameExtensionFilter filter = new FileNameExtensionFilter("c files", "c");
-		       // chooser.addChoosableFileFilter(filter);
-		        int ret = chooser.showDialog(null, "Open file");
-
-		        if (ret == JFileChooser.APPROVE_OPTION) {
-		        	
-		          //add the selected file to the canvas
-		          File file = chooser.getSelectedFile();
-		          try {
-					image = ImageIO.read(new FileInputStream(file.toString()));
-		          	engine.loadImageFromFile(file);
-					canvas.repaint();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					// Add a file filter for each one
+					for (int i = 0; i < suffices.length; i++) {
+						FileNameExtensionFilter filter = new FileNameExtensionFilter(
+								suffices[i] + " files", suffices[i]);
+						System.out.println(suffices[i] + "\n");
+						chooser.addChoosableFileFilter(filter);
+					}
 				}
-		          System.out.println(file);
-		        }
+
+				// FileNameExtensionFilter filter = new
+				// FileNameExtensionFilter("c files", "c");
+				// chooser.addChoosableFileFilter(filter);
+				int ret = chooser.showDialog(null, "Open file");
+
+				if (ret == JFileChooser.APPROVE_OPTION) {
+
+					// add the selected file to the canvas
+					File file = chooser.getSelectedFile();
+					try {
+						image = ImageIO.read(new FileInputStream(file
+								.toString()));
+						engine.loadImageFromFile(file);
+						canvas.repaint();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					System.out.println(file);
+				}
 
 			}
 		});
-		
+
 		JButton saveImage = new JButton("Save Image");
-		
+
 		// - add filters
 		JLabel filterText = new JLabel("Filters:");
 		JRadioButton noFilter = new JRadioButton("None");
@@ -126,7 +132,7 @@ public class GUIframe{
 		JRadioButton sepiaFilter = new JRadioButton("Sepia");
 		JRadioButton grayscaleFilter = new JRadioButton("Gray Scale");
 		JRadioButton negativeFilter = new JRadioButton("Negative");
-		
+
 		// - add slider
 		JLabel renderSpeedText = new JLabel("Render Speed:");
 		final JSlider renderSpeed_slider = new JSlider(1, 100);
@@ -135,51 +141,49 @@ public class GUIframe{
 		renderSpeed_value.setSize(20, 20);
 		renderSpeed_value.setMaximumSize(dim);
 		renderSpeed_value.setText("50%");
-		renderSpeed_slider.addChangeListener(new ChangeListener(){
-            @Override
-            public void stateChanged(ChangeEvent e) {
-            	renderSpeed_value.setText(String.valueOf(renderSpeed_slider.getValue() + "%"));
-            }
-        });
-		
-		
-		//setup the panels
+		renderSpeed_slider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				renderSpeed_value.setText(String.valueOf(renderSpeed_slider
+						.getValue() + "%"));
+			}
+		});
+
+		// setup the panels
 		mainPanel = new JPanel();
 		canvasPanel = new JPanel();
 		buttonsPanel = new JPanel();
-		//buttonsPanel.setBounds(0, 0, 300, 300);
+		// buttonsPanel.setBounds(0, 0, 300, 300);
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
 		canvas.setBounds(0, 0, 1024, 800);
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-		
-		
-		//setup the button panel
+
+		// setup the button panel
 		Container contentPane = window.getContentPane();
-		
-		
+
 		buttonsPanel.add(openImage);
-		buttonsPanel.add(Box.createRigidArea(new Dimension(5,10)));
+		buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
 		buttonsPanel.add(saveImage);
-		buttonsPanel.add(Box.createRigidArea(new Dimension(5,20)));
+		buttonsPanel.add(Box.createRigidArea(new Dimension(5, 20)));
 		buttonsPanel.add(filterText);
-		buttonsPanel.add(Box.createRigidArea(new Dimension(5,10)));
-		
+		buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+
 		JPanel filterPanel = new JPanel();
 		filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.X_AXIS));
-		filterPanel.add(Box.createRigidArea(new Dimension(10,20)));
+		filterPanel.add(Box.createRigidArea(new Dimension(10, 20)));
 		filterPanel.add(filterText);
-		filterPanel.add(Box.createRigidArea(new Dimension(10,20)));
+		filterPanel.add(Box.createRigidArea(new Dimension(10, 20)));
 		filterPanel.add(noFilter);
 		filterPanel.add(sepiaFilter);
 		filterPanel.add(grayscaleFilter);
 		filterPanel.add(negativeFilter);
-		
+
 		buttonsPanel.add(filterPanel);
-		buttonsPanel.add(Box.createRigidArea(new Dimension(5,10)));
+		buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
 		buttonsPanel.add(renderSpeedText);
-		buttonsPanel.add(Box.createRigidArea(new Dimension(5,10)));
+		buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
 		buttonsPanel.add(renderSpeed_slider);
-		buttonsPanel.add(Box.createRigidArea(new Dimension(5,10)));
+		buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
 		buttonsPanel.add(renderSpeed_value);
 
 		startFilter = new JButton("Start filter");
@@ -190,19 +194,19 @@ public class GUIframe{
 		startFilter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(image == null) {
-					JOptionPane.showMessageDialog(window, "Cannot start timer without an image open");
+				if (image == null) {
+					JOptionPane.showMessageDialog(window,
+							"Cannot start timer without an image open");
 					return;
 				}
-				if(startTime == -1) {
+				if (startTime == -1) {
 					startTime = System.currentTimeMillis();
 					long maxTimeToTake = 1000;
 					long sliderVal = renderSpeed_slider.getValue();
 					sliderVal *= 10;
 					timeToRun = maxTimeToTake - sliderVal;
 					timer.scheduleAtFixedRate(new UpdateImage(), 0, 10);
-				}
-				else {
+				} else {
 					System.out.println("timer already running!");
 				}
 			}
@@ -211,29 +215,27 @@ public class GUIframe{
 		canvasPanel.add(canvas);
 		mainPanel.add(buttonsPanel);
 		mainPanel.add(canvasPanel);
-		
-		
-		//add the main panel to the window
-	    window.add(mainPanel);
-	    
-	    window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-	    window.setResizable(true);
-	    window.setVisible(true);
+
+		// add the main panel to the window
+		window.add(mainPanel);
+
+		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		window.setResizable(true);
+		window.setVisible(true);
 	}
 
+	class MyCanvas extends Canvas {
 
-    class MyCanvas extends Canvas {
-    	 
-        @Override
-        public void paint(Graphics g) {
+		@Override
+		public void paint(Graphics g) {
 
-                if(engine.hasImage()) {
-                	g.drawImage(engine.getImage(), 0, 0, this);
-            	}
-        }
-    }
+			if (engine.hasImage()) {
+				g.drawImage(engine.getImage(), 0, 0, this);
+			}
+		}
+	}
 
-    class UpdateImage extends TimerTask {
+	class UpdateImage extends TimerTask {
 
 		@Override
 		public void run() {
@@ -246,8 +248,9 @@ public class GUIframe{
 
 			});
 
-			if(System.currentTimeMillis() - startTime >= timeToRun) {
-				System.out.println("timer end! " + (System.currentTimeMillis() - startTime));
+			if (System.currentTimeMillis() - startTime >= timeToRun) {
+				System.out.println("timer end! "
+						+ (System.currentTimeMillis() - startTime));
 				startTime = -1;
 				cancel();
 			}
@@ -255,6 +258,5 @@ public class GUIframe{
 		}
 
 	}
-	
 
 }
