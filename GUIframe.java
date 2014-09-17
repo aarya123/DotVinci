@@ -102,7 +102,7 @@ public class GUIframe{
 		        if (ret == JFileChooser.APPROVE_OPTION) {
 		        	
 		          //add the selected file to the canvas
-		          File file = chooser.getSelectedFile();
+		          File file = chooser.getSelectedFile(); 
 		          try {
 					image = ImageIO.read(new FileInputStream(file.toString()));
 		          	engine.loadImageFromFile(file);
