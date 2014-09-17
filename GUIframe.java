@@ -210,10 +210,7 @@ public class GUIframe implements Engine.EngineClient {
 
 		@Override
 		public void paint(Graphics g) {
-
-			if (engine.hasImage()) {
-				g.drawImage(engine.getImage(), 0, 0, this);
-			}
+			engine.updateOutput(g, this);
 		}
 	}
 
