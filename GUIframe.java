@@ -14,6 +14,8 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -45,6 +47,10 @@ public class GUIframe{
 	private MyCanvas canvas;
 	String suffices[];
 	private Engine engine;
+	private JButton startFilter;
+	private Timer timer;
+	private long startTime;
+	private long timeToRun;
 
 	public GUIframe(int width, int height) throws FileNotFoundException, IOException {
 	
@@ -171,6 +177,31 @@ public class GUIframe{
 		buttonsPanel.add(Box.createRigidArea(new Dimension(5,10)));
 		buttonsPanel.add(renderSpeed_value);
 
+		startFilter = new JButton("Start filter");
+		timer = new Timer();
+		buttonsPanel.add(startFilter);
+		startTime = -1;
+		timeToRun = -1;
+		startFilter.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(image == null) {
+					return;
+				}
+				if(startTime == -1) {
+					startTime = System.currentTimeMillis();
+					long maxTimeToTake = 1000;
+					long sliderVal = renderSpeed_slider.getValue();
+					sliderVal *= 10;
+					timeToRun = maxTimeToTake - sliderVal;
+					timer.scheduleAtFixedRate(new UpdateImage(), 0, 10);
+				}
+				else {
+					System.out.println("timer already running!");
+				}
+			}
+		});
+
 		canvasPanel.add(canvas);
 		mainPanel.add(buttonsPanel);
 		mainPanel.add(canvasPanel);
@@ -195,5 +226,29 @@ public class GUIframe{
             	}
         }
     }
+
+    class UpdateImage extends TimerTask {
+
+		@Override
+		public void run() {
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					canvas.repaint();
+				}
+
+			});
+
+			if(System.currentTimeMillis() - startTime >= timeToRun) {
+				System.out.println("timer end! " + (System.currentTimeMillis() - startTime));
+				startTime = -1;
+				cancel();
+			}
+
+		}
+
+	}
+	
 
 }
