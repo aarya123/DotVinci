@@ -121,11 +121,91 @@ public class GUIframe{
 		
 		// - add filters
 		JLabel filterText = new JLabel("Filters:");
-		JRadioButton noFilter = new JRadioButton("None");
+		final JRadioButton noFilter = new JRadioButton("None");
 		noFilter.setSelected(true);
-		JRadioButton sepiaFilter = new JRadioButton("Sepia");
-		JRadioButton grayscaleFilter = new JRadioButton("Gray Scale");
-		JRadioButton negativeFilter = new JRadioButton("Negative");
+		final JRadioButton sepiaFilter = new JRadioButton("Sepia");
+		final JRadioButton grayscaleFilter = new JRadioButton("Gray Scale");
+		final JRadioButton negativeFilter = new JRadioButton("Negative");
+		
+		//prevent user from unchecking a radio button
+		noFilter.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(noFilter.isSelected() == false)
+					noFilter.setSelected(true);
+			}
+		});
+		sepiaFilter.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(sepiaFilter.isSelected() == false)
+					sepiaFilter.setSelected(true);
+			}
+		});
+		negativeFilter.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(negativeFilter.isSelected() == false)
+					negativeFilter.setSelected(true);
+			}
+		});
+		grayscaleFilter.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(grayscaleFilter.isSelected() == false)
+					grayscaleFilter.setSelected(true);
+			}
+		});
+		
+		//uncheck all other radio buttons when the user checks a radio button
+		noFilter.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(noFilter.isSelected() == true){
+					sepiaFilter.setSelected(false);
+					grayscaleFilter.setSelected(false);
+					negativeFilter.setSelected(false);
+				}
+			}
+		});
+		sepiaFilter.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(sepiaFilter.isSelected() == true){
+					noFilter.setSelected(false);
+					grayscaleFilter.setSelected(false);
+					negativeFilter.setSelected(false);
+				}
+			}
+		});
+		negativeFilter.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(negativeFilter.isSelected() == true){
+					sepiaFilter.setSelected(false);
+					grayscaleFilter.setSelected(false);
+					noFilter.setSelected(false);
+				}
+			}
+		});
+		grayscaleFilter.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(grayscaleFilter.isSelected() == true){
+					sepiaFilter.setSelected(false);
+					noFilter.setSelected(false);
+					negativeFilter.setSelected(false);
+				}
+			}
+		});
 		
 		// - add slider
 		JLabel renderSpeedText = new JLabel("Render Speed:");
