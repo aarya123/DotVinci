@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,10 +41,10 @@ public class GUIframe{
 	private JPanel mainPanel;	//the main Panel will have sub panels
 	private JPanel canvasPanel;
 	private JPanel buttonsPanel;
-	
 	BufferedImage image;
-	
 	private MyCanvas canvas;
+	String suffices[];
+	private Engine engine;
 
 	public GUIframe(int width, int height) throws FileNotFoundException, IOException {
 	
@@ -57,7 +58,9 @@ public class GUIframe{
 		canvas.setBounds(0, 0, 300, 300);
 		canvas.setBackground(Color.WHITE);
 		
-		
+		//intialize engine
+		engine = new Engine();
+
 		//add buttonsPanel objects
 		
 		// - add buttons
@@ -68,15 +71,30 @@ public class GUIframe{
 				
 				//open a JFilesChooser when the open button is clicked
 		        JFileChooser chooser = new JFileChooser();
-		        FileNameExtensionFilter filter = new FileNameExtensionFilter("c files", "c");
-		        chooser.addChoosableFileFilter(filter);
+		        
+		        // Get array of available formats (only once)
+		        if(suffices == null){	
+		        	suffices = ImageIO.getReaderFileSuffixes();
 
+		        	// Add a file filter for each one
+		        	for (int i = 0; i < suffices.length; i++) {
+		        		FileNameExtensionFilter filter = new FileNameExtensionFilter(suffices[i] + " files", suffices[i]);
+		        		System.out.println(suffices[i]+"\n");
+		        		chooser.addChoosableFileFilter(filter);
+		        	}
+		        }
+
+		        //FileNameExtensionFilter filter = new FileNameExtensionFilter("c files", "c");
+		       // chooser.addChoosableFileFilter(filter);
 		        int ret = chooser.showDialog(null, "Open file");
 
 		        if (ret == JFileChooser.APPROVE_OPTION) {
+		        	
+		          //add the selected file to the canvas
 		          File file = chooser.getSelectedFile();
 		          try {
 					image = ImageIO.read(new FileInputStream(file.toString()));
+		          	engine.loadImageFromFile(file);
 					canvas.repaint();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -166,12 +184,14 @@ public class GUIframe{
 	    window.setVisible(true);
 	}
 
+
     class MyCanvas extends Canvas {
     	 
         @Override
         public void paint(Graphics g) {
-                if(image != null) {
-                	g.drawImage(image, 0, 0, this);
+
+                if(engine.hasImage()) {
+                	g.drawImage(engine.getImage(), 0, 0, this);
             	}
         }
     }
