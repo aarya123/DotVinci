@@ -45,6 +45,7 @@ public class Engine {
 		timer = new Timer();
 		startTime = -1;
 		timeToRun = -1;
+		filter = Filter.NORMAL;
 	}
 
 	public enum Filter {
@@ -58,7 +59,7 @@ public class Engine {
 		this.engineClient = engineClient;
 	}
 	
-	public IFilter geFilter()
+	public IFilter getFilter()
 	{
 		
 		if(Filter.SEPIA==filter)
@@ -118,8 +119,11 @@ public class Engine {
 
 	public void updateOutput(Graphics g, Canvas canvas) {
 		if (hasImage()) {
-			
-			//g.drawImage(getImage(), 0, 0, canvas);
+//			double x=getImage().getWidth()*Math.random();
+//			double y=getImage().getHeight()*Math.random();
+//			Pixel pixel=new Pixel(x,y);
+//			Pixel pixel=getFilter().filterPixel(pixel);
+//			g.drawImage(getImage(), 0, 0, canvas);
 		}
 	}
 
