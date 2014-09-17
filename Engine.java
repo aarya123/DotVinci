@@ -1,12 +1,22 @@
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javax.swing.SwingUtilities;
+
+import pixelator.GrayScaleFilter;
+import pixelator.IFilter;
+import pixelator.NegativeFilter;
+import pixelator.RGBFilter;
+import pixelator.SepiaFilter;
+
 import java.awt.Graphics;
 import java.awt.Canvas;
 
@@ -20,6 +30,10 @@ public class Engine {
 	private long startTime;
 	private long timeToRun;
 	private EngineClient engineClient;
+	final SepiaFilter SEPIA_FILTER=new SepiaFilter();
+	final GrayScaleFilter GRAYSCALE_FILTER=new GrayScaleFilter();
+	final NegativeFilter NEGATIVE_FILTER= new NegativeFilter();
+	final RGBFilter RGB_FILTER=new RGBFilter();
 
 
 
@@ -35,13 +49,35 @@ public class Engine {
 
 	public enum Filter {
 		SEPIA,
-		GRAYSCALE
+		GRAYSCALE,
+		NEGATIVE,
+		NORMAL
 	}
 
 	public void setEngineClient(EngineClient engineClient) {
 		this.engineClient = engineClient;
 	}
-
+	
+	public IFilter geFilter()
+	{
+		
+		if(Filter.SEPIA==filter)
+		{
+			return SEPIA_FILTER;
+		}
+		else if(Filter.GRAYSCALE==filter)
+		{
+			return GRAYSCALE_FILTER;
+		}
+		else if(Filter.NEGATIVE==filter)
+		{
+			return NEGATIVE_FILTER;
+		}
+		else{
+			return RGB_FILTER;
+		}
+	}
+	
 	public void setFilter(Filter filter) {
 		this.filter = filter;
 	}
@@ -82,7 +118,8 @@ public class Engine {
 
 	public void updateOutput(Graphics g, Canvas canvas) {
 		if (hasImage()) {
-			g.drawImage(getImage(), 0, 0, canvas);
+			
+			//g.drawImage(getImage(), 0, 0, canvas);
 		}
 	}
 
