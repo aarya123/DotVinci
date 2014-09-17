@@ -133,32 +133,41 @@ public class GUIframe implements Engine.EngineClient {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(noFilter.isSelected() == false)
+				if(noFilter.isSelected() == false) {
 					noFilter.setSelected(true);
+					engine.setFilter(Engine.Filter.NO_FILTER);
+				}
 			}
 		});
 		sepiaFilter.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(sepiaFilter.isSelected() == false)
+				if(sepiaFilter.isSelected() == false) {
 					sepiaFilter.setSelected(true);
+					engine.setFilter(Engine.Filter.SEPIA);
+				}
 			}
 		});
 		negativeFilter.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(negativeFilter.isSelected() == false)
+				if(negativeFilter.isSelected() == false) {
 					negativeFilter.setSelected(true);
+					engine.setFilter(Engine.Filter.NEGATIVE);
+				}
+
 			}
 		});
 		grayscaleFilter.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(grayscaleFilter.isSelected() == false)
+				if(grayscaleFilter.isSelected() == false) {
 					grayscaleFilter.setSelected(true);
+					engine.setFilter(Engine.Filter.GRAYSCALE);
+				}
 			}
 		});
 		

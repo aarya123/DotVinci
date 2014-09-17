@@ -31,11 +31,14 @@ public class Engine {
 		timer = new Timer();
 		startTime = -1;
 		timeToRun = -1;
+		filter = Filter.NO_FILTER;
 	}
 
 	public enum Filter {
 		SEPIA,
-		GRAYSCALE
+		GRAYSCALE,
+		NEGATIVE,
+		NO_FILTER
 	}
 
 	public void setEngineClient(EngineClient engineClient) {
