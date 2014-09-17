@@ -14,8 +14,6 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -30,14 +28,13 @@ import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JOptionPane;
 
-public class GUIframe{
+public class GUIframe implements Engine.EngineClient {
 	
 	private JFrame window;
 	
@@ -49,9 +46,6 @@ public class GUIframe{
 	String suffices[];
 	private Engine engine;
 	private JButton startFilter;
-	private Timer timer;
-	private long startTime;
-	private long timeToRun;
 
 	public GUIframe(int width, int height) throws FileNotFoundException, IOException {
 	
@@ -67,6 +61,7 @@ public class GUIframe{
 		
 		//intialize engine
 		engine = new Engine();
+		engine.setEngineClient(this);
 
 		//add buttonsPanel objects
 		
@@ -76,7 +71,7 @@ public class GUIframe{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				if(startTime != -1) {
+				if(engine.isTimerRunning()) {
 					JOptionPane.showMessageDialog(window, "Cannot open new image while timer is running");
 					return;
 				}
@@ -183,10 +178,7 @@ public class GUIframe{
 		buttonsPanel.add(renderSpeed_value);
 
 		startFilter = new JButton("Start filter");
-		timer = new Timer();
 		buttonsPanel.add(startFilter);
-		startTime = -1;
-		timeToRun = -1;
 		startFilter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -194,17 +186,7 @@ public class GUIframe{
 					JOptionPane.showMessageDialog(window, "Cannot start timer without an image open");
 					return;
 				}
-				if(startTime == -1) {
-					startTime = System.currentTimeMillis();
-					long maxTimeToTake = 1000;
-					long sliderVal = renderSpeed_slider.getValue();
-					sliderVal *= 10;
-					timeToRun = maxTimeToTake - sliderVal;
-					timer.scheduleAtFixedRate(new UpdateImage(), 0, 10);
-				}
-				else {
-					System.out.println("timer already running!");
-				}
+				engine.startTimer(renderSpeed_slider.getValue());
 			}
 		});
 
@@ -233,28 +215,10 @@ public class GUIframe{
         }
     }
 
-    class UpdateImage extends TimerTask {
-
-		@Override
-		public void run() {
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					canvas.repaint();
-				}
-
-			});
-
-			if(System.currentTimeMillis() - startTime >= timeToRun) {
-				System.out.println("timer end! " + (System.currentTimeMillis() - startTime));
-				startTime = -1;
-				cancel();
-			}
-
-		}
-
-	}
+    @Override
+    public void onTimerTick() {
+    	canvas.repaint();
+    }
 	
 
 }
