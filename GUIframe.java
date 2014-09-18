@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class GUIframe implements Engine.EngineClient {
-
+    boolean DEBUG = true;
     private JFrame window;
 
     private JPanel mainPanel; // the main Panel will have sub panels
@@ -33,8 +33,6 @@ public class GUIframe implements Engine.EngineClient {
 
         // add canvasPanel objects
         canvas = new MyCanvas();
-        // image = ImageIO.read(new
-        // FileInputStream("C:/Users/Pranav/Pictures/doge.jpeg"));
         canvas.setSize(width, height);
         canvas.setBounds(0, 0, 300, 300);
         canvas.setBackground(Color.WHITE);
@@ -42,6 +40,11 @@ public class GUIframe implements Engine.EngineClient {
         // intialize engine
         engine = new Engine();
         engine.setEngineClient(this);
+        if (DEBUG) {
+            image = ImageIO.read(new FileInputStream("sample.jpg"));
+            engine.setImage(image);
+            System.out.println(String.format("Size is width: %d height: %d", image.getWidth(), image.getHeight()));
+        }
 
         // add buttonsPanel objects
 
@@ -65,7 +68,6 @@ public class GUIframe implements Engine.EngineClient {
                     for (int i = 0; i < suffices.length; i++) {
                         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                                 suffices[i] + " files", suffices[i]);
-                        System.out.println(suffices[i] + "\n");
                         chooser.addChoosableFileFilter(filter);
                     }
                 }

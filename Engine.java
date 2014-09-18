@@ -83,7 +83,7 @@ public class Engine {
     public void startTimer(long sliderVal) {
         if (startTime == -1) {
             startTime = System.currentTimeMillis();
-            long maxTimeToTake = 1000;
+            long maxTimeToTake = 1000000;
             sliderVal *= 10;
             timeToRun = maxTimeToTake - sliderVal;
             timer.scheduleAtFixedRate(new UpdateImage(), 0, 10);
@@ -100,8 +100,8 @@ public class Engine {
 
     public void updateOutput(Graphics g, Canvas canvas) {
         if (hasImage()) {
-            int x = (int) Math.round(getImage().getWidth() * Math.random());
-            int y = (int) Math.round(getImage().getHeight() * Math.random());
+            int x = (int) (getImage().getWidth() * Math.random());
+            int y = (int) (getImage().getHeight() * Math.random());
             Color color = new Color(getImage().getRGB(x, y));
             Pixel pixel = new Pixel(x, y, color.getRed(), color.getGreen(), color.getBlue());
             pixel = getFilter().filterPixel(pixel);
