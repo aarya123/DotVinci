@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class GUIframe implements Engine.EngineClient {
-
+    boolean DEBUG = true;
     private JFrame window;
 
     private JPanel mainPanel; // the main Panel will have sub panels
@@ -24,6 +24,7 @@ public class GUIframe implements Engine.EngineClient {
     String suffices[];
     private Engine engine;
     private JButton startFilter;
+    private JButton pauseFilter;
 
     public GUIframe(int width, int height) throws FileNotFoundException,
             IOException {
@@ -33,8 +34,6 @@ public class GUIframe implements Engine.EngineClient {
 
         // add canvasPanel objects
         canvas = new MyCanvas();
-        // image = ImageIO.read(new
-        // FileInputStream("C:/Users/Pranav/Pictures/doge.jpeg"));
         canvas.setSize(width, height);
         canvas.setBounds(0, 0, 300, 300);
         canvas.setBackground(Color.WHITE);
@@ -42,6 +41,11 @@ public class GUIframe implements Engine.EngineClient {
         // intialize engine
         engine = new Engine();
         engine.setEngineClient(this);
+        if (DEBUG) {
+            image = ImageIO.read(new FileInputStream("sample.jpg"));
+            engine.setImage(image);
+            System.out.println(String.format("Size is width: %d height: %d", image.getWidth(), image.getHeight()));
+        }
 
         // add buttonsPanel objects
 
@@ -51,8 +55,11 @@ public class GUIframe implements Engine.EngineClient {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (engine.isTimerRunning()) {
-                    JOptionPane.showMessageDialog(window, "Cannot open new image while timer is running");
-                    return;
+                    // Pause drawing on canvas to load image
+                	for(ActionListener a: pauseFilter.getActionListeners()) {
+                	    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+                	    });
+                	}
                 }
                 // open a JFilesChooser when the open button is clicked
                 JFileChooser chooser = new JFileChooser();
@@ -65,7 +72,6 @@ public class GUIframe implements Engine.EngineClient {
                     for (int i = 0; i < suffices.length; i++) {
                         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                                 suffices[i] + " files", suffices[i]);
-                        System.out.println(suffices[i] + "\n");
                         chooser.addChoosableFileFilter(filter);
                     }
                 }
@@ -83,7 +89,6 @@ public class GUIframe implements Engine.EngineClient {
                         engine.loadImageFromFile(file);
                         canvas.repaint();
                     } catch (IOException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                     System.out.println(file);
@@ -213,9 +218,9 @@ public class GUIframe implements Engine.EngineClient {
         canvasPanel = new JPanel();
         buttonsPanel = new JPanel();
         // buttonsPanel.setBounds(0, 0, 300, 300);
-        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
         canvas.setBounds(0, 0, 1024, 800);
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         // setup the button panel
         Container contentPane = window.getContentPane();
@@ -256,9 +261,26 @@ public class GUIframe implements Engine.EngineClient {
                     return;
                 }
                 engine.startTimer(renderSpeed_slider.getValue());
+                pauseFilter.setVisible(true);
+                startFilter.setVisible(false);
             }
         });
-
+        
+        pauseFilter = new JButton("Pause filter");
+        buttonsPanel.add(pauseFilter);
+        pauseFilter.setVisible(false);
+        startFilter.setVisible(true);
+        pauseFilter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	pauseFilter.setVisible(false);
+                startFilter.setVisible(true);
+                /*
+                 *  TODO: Add actions to pause drawing here
+                 */
+            }
+        });
+        
         canvasPanel.add(canvas);
         mainPanel.add(buttonsPanel);
         mainPanel.add(canvasPanel);
