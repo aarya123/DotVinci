@@ -24,6 +24,7 @@ public class GUIframe implements Engine.EngineClient {
     String suffices[];
     private Engine engine;
     private JButton startFilter;
+    private JButton pauseFilter;
 
     public GUIframe(int width, int height) throws FileNotFoundException,
             IOException {
@@ -54,8 +55,11 @@ public class GUIframe implements Engine.EngineClient {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (engine.isTimerRunning()) {
-                    JOptionPane.showMessageDialog(window, "Cannot open new image while timer is running");
-                    return;
+                    // Pause drawing on canvas to load image
+                	for(ActionListener a: pauseFilter.getActionListeners()) {
+                	    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+                	    });
+                	}
                 }
                 // open a JFilesChooser when the open button is clicked
                 JFileChooser chooser = new JFileChooser();
@@ -85,7 +89,6 @@ public class GUIframe implements Engine.EngineClient {
                         engine.loadImageFromFile(file);
                         canvas.repaint();
                     } catch (IOException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                     System.out.println(file);
@@ -259,9 +262,26 @@ public class GUIframe implements Engine.EngineClient {
                     return;
                 }
                 engine.startTimer(renderSpeed_slider.getValue());
+                pauseFilter.setVisible(true);
+                startFilter.setVisible(false);
             }
         });
-
+        
+        pauseFilter = new JButton("Pause filter");
+        buttonsPanel.add(pauseFilter);
+        pauseFilter.setVisible(false);
+        startFilter.setVisible(true);
+        pauseFilter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	pauseFilter.setVisible(false);
+                startFilter.setVisible(true);
+                /*
+                 *  TODO: Add actions to pause drawing here
+                 */
+                System.out.println("PAUSE");
+            }
+        });
         canvasPanel.add(canvas);
         mainPanel.add(buttonsPanel);
         mainPanel.add(canvasPanel);
