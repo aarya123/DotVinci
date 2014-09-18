@@ -219,9 +219,9 @@ public class GUIframe implements Engine.EngineClient {
         canvasPanel = new JPanel();
         buttonsPanel = new JPanel();
         // buttonsPanel.setBounds(0, 0, 300, 300);
-        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
-        canvas.setBounds(0, 0, 1024, 800);
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+        canvas.setBounds(0, 0, 800, 1024);
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         // setup the button panel
         Container contentPane = window.getContentPane();
