@@ -279,9 +279,9 @@ public class GUIframe implements Engine.EngineClient {
                 /*
                  *  TODO: Add actions to pause drawing here
                  */
-                System.out.println("PAUSE");
             }
         });
+        
         canvasPanel.add(canvas);
         mainPanel.add(buttonsPanel);
         mainPanel.add(canvasPanel);
