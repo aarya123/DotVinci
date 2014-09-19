@@ -37,4 +37,9 @@ public class Pixel {
     public Color getColor() {
         return new Color((int) red, (int) green, (int) blue);
     }
+
+	public String toString() {
+		return "Pixel [x=" + x + ", y=" + y + ", red=" + red + ", green="
+				+ green + ", blue=" + blue + "]";
+	}
 }
