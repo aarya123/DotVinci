@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class GUIframe implements Engine.EngineClient {
-    boolean DEBUG = true;
+    boolean DEBUG = false;
     private JFrame window;
 
     private JPanel mainPanel; // the main Panel will have sub panels
