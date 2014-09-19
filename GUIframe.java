@@ -26,14 +26,16 @@ public class GUIframe implements Engine.EngineClient {
     private JButton startFilter;
     private JButton pauseFilter;
     private boolean showImage;
+    private BufferedImage dotImage;
 
     public GUIframe(int width, int height) throws FileNotFoundException,
             IOException {
 
+
         showImage = true;
         window = new JFrame("Dot Vinci");
         window.setSize(width, height);
-
+        dotImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         // add canvasPanel objects
         canvas = new MyCanvas();
         canvas.setPreferredSize(new Dimension(width, height));
@@ -277,6 +279,7 @@ public class GUIframe implements Engine.EngineClient {
                             "Cannot start timer without an image open");
                     return;
                 }
+                dotImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
                 engine.startTimer(renderSpeed_slider.getValue());
                 showImage = false;
                 pauseFilter.setVisible(true);
@@ -315,11 +318,16 @@ public class GUIframe implements Engine.EngineClient {
 
         @Override
         public void paintComponent(Graphics g) {
-            if(showImage) {
-                engine.drawImage(g, this);
-            }
-            else {
-                engine.updateOutput(g, this);
+            super.paintComponent(g);
+            if(dotImage != null) {
+                Graphics gImg = dotImage.getGraphics();
+                if(showImage) {
+                    engine.drawImage(gImg);
+                }
+                else {
+                    engine.updateOutput(gImg);
+                }
+                g.drawImage(dotImage, 0, 0, null);
             }
         }
     }

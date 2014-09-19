@@ -98,7 +98,7 @@ public class Engine {
         return System.currentTimeMillis() - startTime;
     }
 
-    public void updateOutput(Graphics g, JPanel canvas) {
+    public void updateOutput(Graphics g) {
         if (hasImage()) {
             int x = (int) (getImage().getWidth() * Math.random());
             int y = (int) (getImage().getHeight() * Math.random());
@@ -117,7 +117,7 @@ public class Engine {
         }
     }
 
-    public void drawImage(Graphics g, JPanel canvas) {
+    public void drawImage(Graphics g) {
         if(hasImage()) {
             g.drawImage(image, 0, 0, null);
         }
