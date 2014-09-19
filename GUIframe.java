@@ -36,6 +36,7 @@ public class GUIframe implements Engine.EngineClient {
         window = new JFrame("Dot Vinci");
         window.setSize(width, height);
         dotImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        clearDotImage();
         // add canvasPanel objects
         canvas = new MyCanvas();
         canvas.setPreferredSize(new Dimension(width, height));
@@ -279,7 +280,7 @@ public class GUIframe implements Engine.EngineClient {
                             "Cannot start timer without an image open");
                     return;
                 }
-                dotImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+                clearDotImage();
                 engine.startTimer(renderSpeed_slider.getValue());
                 showImage = false;
                 pauseFilter.setVisible(true);
@@ -335,6 +336,11 @@ public class GUIframe implements Engine.EngineClient {
     @Override
     public void onTimerTick() {
         canvas.repaint();
+    }
+
+    private void clearDotImage() {
+        dotImage.getGraphics().setColor(Color.WHITE);
+        dotImage.getGraphics().fillRect(0, 0, dotImage.getWidth(), dotImage.getHeight());
     }
 
 }
