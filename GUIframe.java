@@ -20,22 +20,23 @@ public class GUIframe implements Engine.EngineClient {
     private JPanel canvasPanel;
     private JPanel buttonsPanel;
     BufferedImage image;
-    private MyCanvas canvas;
+    private JPanel canvas;
     String suffices[];
     private Engine engine;
     private JButton startFilter;
     private JButton pauseFilter;
+    private boolean showImage;
 
     public GUIframe(int width, int height) throws FileNotFoundException,
             IOException {
 
+        showImage = true;
         window = new JFrame("Dot Vinci");
         window.setSize(width, height);
 
         // add canvasPanel objects
         canvas = new MyCanvas();
-        canvas.setSize(width, height);
-        canvas.setBounds(0, 0, 300, 300);
+        canvas.setPreferredSize(new Dimension(width, height));
         canvas.setBackground(Color.WHITE);
 
         // intialize engine
@@ -87,6 +88,7 @@ public class GUIframe implements Engine.EngineClient {
                         image = ImageIO.read(new FileInputStream(file
                                 .toString()));
                         engine.loadImageFromFile(file);
+                        showImage = true;
                         canvas.repaint();
                     } catch (IOException e1) {
                         e1.printStackTrace();
@@ -235,7 +237,6 @@ public class GUIframe implements Engine.EngineClient {
         buttonsPanel = new JPanel();
         // buttonsPanel.setBounds(0, 0, 300, 300);
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
-        canvas.setBounds(0, 0, 1024, 800);
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         // setup the button panel
@@ -277,6 +278,7 @@ public class GUIframe implements Engine.EngineClient {
                     return;
                 }
                 engine.startTimer(renderSpeed_slider.getValue());
+                showImage = false;
                 pauseFilter.setVisible(true);
                 startFilter.setVisible(false);
             }
@@ -309,11 +311,16 @@ public class GUIframe implements Engine.EngineClient {
         window.setVisible(true);
     }
 
-    class MyCanvas extends Canvas {
+    class MyCanvas extends JPanel {
 
         @Override
-        public void paint(Graphics g) {
-            engine.updateOutput(g, this);
+        public void paintComponent(Graphics g) {
+            if(showImage) {
+                engine.drawImage(g, this);
+            }
+            else {
+                engine.updateOutput(g, this);
+            }
         }
     }
 
