@@ -92,14 +92,29 @@ public class GUIframe implements Engine.EngineClient {
                         e1.printStackTrace();
                     }
                     System.out.println(file);
-
+                    JOptionPane.showMessageDialog(window, "Your image was loaded successfully!");
                 }
 
             }
         });
 
         JButton saveImage = new JButton("Save Image");
-
+        openImage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (engine.isTimerRunning()) {
+                    // Pause drawing on canvas to save image
+                	for(ActionListener a: pauseFilter.getActionListeners()) {
+                	    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+                	    });
+                	}
+                }
+                /*
+                 * TODO: Add save code here
+                 */
+            }
+        });        
+        
         // - add filters
         JLabel filterText = new JLabel("Filters:");
         final JRadioButton noFilter = new JRadioButton("None");
