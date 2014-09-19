@@ -9,11 +9,13 @@ import test.pixelator.SepiaFilterTest;
 public class MainTest {
 
 	public static void main(String[] args) {
+		pixelatorTests();
+	}
+	public static void pixelatorTests(){
 		PixelTest.testAll();
 		GrayScaleFilterTest.testAll();
 		NegativeFilterTest.testAll();
 		RGBFilterTest.testAll();
 		SepiaFilterTest.testAll();
 	}
-
 }
