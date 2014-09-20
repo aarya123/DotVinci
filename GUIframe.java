@@ -300,6 +300,7 @@ public class GUIframe implements Engine.EngineClient {
                 /*
                  *  TODO: Add actions to pause drawing here
                  */
+                engine.stopTimer();
             }
         });
         

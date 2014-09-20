@@ -24,6 +24,7 @@ public class Engine {
     final RGBFilter RGB_FILTER = new RGBFilter();
     private long dotTimeDelta;
     private long lastExec;
+    private Thread drawer;
 
 
     public interface EngineClient {
@@ -89,7 +90,14 @@ public class Engine {
             doubleSliderVal = 1 - doubleSliderVal;
             dotTimeDelta = (long) (defaultDelta * doubleSliderVal);
             System.out.println("dotTimeDelta " + dotTimeDelta);
-            new UpdateImage().start();
+            drawer = new UpdateImage();
+            drawer.start();
+        }
+    }
+
+    public void stopTimer() {
+        if (startTime != -1) {
+            drawer.interrupt();
         }
     }
 
