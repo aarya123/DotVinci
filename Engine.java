@@ -22,6 +22,7 @@ public class Engine {
     final GrayScaleFilter GRAYSCALE_FILTER = new GrayScaleFilter();
     final NegativeFilter NEGATIVE_FILTER = new NegativeFilter();
     final RGBFilter RGB_FILTER = new RGBFilter();
+    private long dotTimeDelta;
     private long lastExec;
 
 
@@ -82,11 +83,12 @@ public class Engine {
     public void startTimer(long sliderVal) {
         if (startTime == -1) {
             startTime = System.currentTimeMillis();
-            long maxTimeToTake = 20000;
-            sliderVal *= (maxTimeToTake / 100);
-            timeToRun = Math.max(0, maxTimeToTake - sliderVal);
-            System.out.println("time to run " + timeToRun);
-            lastExec = startTime;
+            long defaultDelta = 500;
+            double doubleSliderVal = (double) sliderVal;
+            doubleSliderVal /= 100.0;
+            doubleSliderVal = 1 - doubleSliderVal;
+            dotTimeDelta = (long) (defaultDelta * doubleSliderVal);
+            System.out.println("dotTimeDelta " + dotTimeDelta);
             new UpdateImage().start();
         }
     }
@@ -127,8 +129,13 @@ public class Engine {
     class UpdateImage extends Thread {
         @Override
         public void run() {
-            while(getTimerRunLength() < timeToRun) {
-                engineClient.onTimerTick();
+            
+            while(!isInterrupted()) {
+                boolean canTick = (System.currentTimeMillis() - lastExec) >= dotTimeDelta;
+                if(canTick) {
+                    lastExec = System.currentTimeMillis();
+                    engineClient.onTimerTick();
+                }
             }
             startTime = -1;
         }
