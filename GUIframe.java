@@ -98,7 +98,6 @@ public class GUIframe implements Engine.EngineClient {
                         e1.printStackTrace();
                     }
                     System.out.println(file);
-                    JOptionPane.showMessageDialog(window, "Your image was loaded successfully!");
                 }
 
             }
