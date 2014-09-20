@@ -92,6 +92,7 @@ public class GUIframe implements Engine.EngineClient {
                                 .toString()));
                         engine.loadImageFromFile(file);
                         showImage = true;
+                        clearDotImage();
                         canvas.repaint();
                     } catch (IOException e1) {
                         e1.printStackTrace();
@@ -280,8 +281,10 @@ public class GUIframe implements Engine.EngineClient {
                             "Cannot start timer without an image open");
                     return;
                 }
-                clearDotImage();
                 engine.startTimer(renderSpeed_slider.getValue());
+                if(showImage == true) {
+                    clearDotImage();
+                }
                 showImage = false;
                 pauseFilter.setVisible(true);
                 startFilter.setVisible(false);
