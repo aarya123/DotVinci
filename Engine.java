@@ -15,7 +15,6 @@ public class Engine {
 
     private BufferedImage image;
     private Filter filter;
-    private Timer timer;
     private long startTime;
     private long timeToRun;
     private EngineClient engineClient;
@@ -23,6 +22,9 @@ public class Engine {
     final GrayScaleFilter GRAYSCALE_FILTER = new GrayScaleFilter();
     final NegativeFilter NEGATIVE_FILTER = new NegativeFilter();
     final RGBFilter RGB_FILTER = new RGBFilter();
+    private long dotTimeDelta;
+    private long lastExec;
+    private Thread drawer;
 
 
     public interface EngineClient {
@@ -30,7 +32,6 @@ public class Engine {
     }
 
     public Engine() {
-        timer = new Timer();
         startTime = -1;
         timeToRun = -1;
         filter = Filter.NORMAL;
@@ -83,10 +84,20 @@ public class Engine {
     public void startTimer(long sliderVal) {
         if (startTime == -1) {
             startTime = System.currentTimeMillis();
-            long maxTimeToTake = 1000000;
-            sliderVal *= 10;
-            timeToRun = maxTimeToTake - sliderVal;
-            timer.scheduleAtFixedRate(new UpdateImage(), 0, 10);
+            long defaultDelta = 500;
+            double doubleSliderVal = (double) sliderVal;
+            doubleSliderVal /= 100.0;
+            doubleSliderVal = 1 - doubleSliderVal;
+            dotTimeDelta = (long) (defaultDelta * doubleSliderVal);
+            System.out.println("dotTimeDelta " + dotTimeDelta);
+            drawer = new UpdateImage();
+            drawer.start();
+        }
+    }
+
+    public void stopTimer() {
+        if (startTime != -1) {
+            drawer.interrupt();
         }
     }
 
@@ -98,7 +109,7 @@ public class Engine {
         return System.currentTimeMillis() - startTime;
     }
 
-    public void updateOutput(Graphics g, Canvas canvas) {
+    public void updateOutput(Graphics g) {
         if (hasImage()) {
             int x = (int) (getImage().getWidth() * Math.random());
             int y = (int) (getImage().getHeight() * Math.random());
@@ -117,26 +128,25 @@ public class Engine {
         }
     }
 
-    class UpdateImage extends TimerTask {
+    public void drawImage(Graphics g) {
+        if(hasImage()) {
+            g.drawImage(image, 0, 0, null);
+        }
+    }
 
+    class UpdateImage extends Thread {
         @Override
         public void run() {
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
+            
+            while(!isInterrupted()) {
+                boolean canTick = (System.currentTimeMillis() - lastExec) >= dotTimeDelta;
+                if(canTick) {
+                    lastExec = System.currentTimeMillis();
                     engineClient.onTimerTick();
                 }
-
-            });
-
-            if (getTimerRunLength() >= timeToRun) {
-                System.out.println("timer end! " + getTimerRunLength());
-                startTime = -1;
-                cancel();
             }
-
+            startTime = -1;
         }
-
     }
+
 }

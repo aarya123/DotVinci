@@ -20,22 +20,26 @@ public class GUIframe implements Engine.EngineClient {
     private JPanel canvasPanel;
     private JPanel buttonsPanel;
     BufferedImage image;
-    private MyCanvas canvas;
+    private JPanel canvas;
     String suffices[];
     private Engine engine;
     private JButton startFilter;
     private JButton pauseFilter;
+    private boolean showImage;
+    private BufferedImage dotImage;
 
     public GUIframe(int width, int height) throws FileNotFoundException,
             IOException {
 
+
+        showImage = true;
         window = new JFrame("Dot Vinci");
         window.setSize(width, height);
-
+        dotImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        clearDotImage();
         // add canvasPanel objects
         canvas = new MyCanvas();
-        canvas.setSize(width, height);
-        canvas.setBounds(0, 0, 300, 300);
+        canvas.setPreferredSize(new Dimension(width, height));
         canvas.setBackground(Color.WHITE);
 
         // intialize engine
@@ -87,6 +91,8 @@ public class GUIframe implements Engine.EngineClient {
                         image = ImageIO.read(new FileInputStream(file
                                 .toString()));
                         engine.loadImageFromFile(file);
+                        showImage = true;
+                        clearDotImage();
                         canvas.repaint();
                     } catch (IOException e1) {
                         e1.printStackTrace();
@@ -98,7 +104,22 @@ public class GUIframe implements Engine.EngineClient {
         });
 
         JButton saveImage = new JButton("Save Image");
-
+        openImage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (engine.isTimerRunning()) {
+                    // Pause drawing on canvas to save image
+                	for(ActionListener a: pauseFilter.getActionListeners()) {
+                	    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+                	    });
+                	}
+                }
+                /*
+                 * TODO: Add save code here
+                 */
+            }
+        });        
+        
         // - add filters
         JLabel filterText = new JLabel("Filters:");
         final JRadioButton noFilter = new JRadioButton("None");
@@ -219,7 +240,6 @@ public class GUIframe implements Engine.EngineClient {
         buttonsPanel = new JPanel();
         // buttonsPanel.setBounds(0, 0, 300, 300);
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
-        canvas.setBounds(0, 0, 1024, 800);
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         // setup the button panel
@@ -261,6 +281,10 @@ public class GUIframe implements Engine.EngineClient {
                     return;
                 }
                 engine.startTimer(renderSpeed_slider.getValue());
+                if(showImage == true) {
+                    clearDotImage();
+                }
+                showImage = false;
                 pauseFilter.setVisible(true);
                 startFilter.setVisible(false);
             }
@@ -278,6 +302,7 @@ public class GUIframe implements Engine.EngineClient {
                 /*
                  *  TODO: Add actions to pause drawing here
                  */
+                engine.stopTimer();
             }
         });
         
@@ -293,17 +318,32 @@ public class GUIframe implements Engine.EngineClient {
         window.setVisible(true);
     }
 
-    class MyCanvas extends Canvas {
+    class MyCanvas extends JPanel {
 
         @Override
-        public void paint(Graphics g) {
-            engine.updateOutput(g, this);
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if(dotImage != null) {
+                Graphics gImg = dotImage.getGraphics();
+                if(showImage) {
+                    engine.drawImage(gImg);
+                }
+                else {
+                    engine.updateOutput(gImg);
+                }
+                g.drawImage(dotImage, 0, 0, null);
+            }
         }
     }
 
     @Override
     public void onTimerTick() {
         canvas.repaint();
+    }
+
+    private void clearDotImage() {
+        dotImage.getGraphics().setColor(Color.WHITE);
+        dotImage.getGraphics().fillRect(0, 0, dotImage.getWidth(), dotImage.getHeight());
     }
 
 }
