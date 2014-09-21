@@ -49,7 +49,6 @@ public class Engine {
     }
 
     public IFilter getFilter() {
-
         if (Filter.SEPIA == filter) {
             return SEPIA_FILTER;
         } else if (Filter.GRAYSCALE == filter) {
