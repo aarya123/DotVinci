@@ -3,9 +3,12 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +26,7 @@ public class GUIframe implements Engine.EngineClient {
     private Engine engine;
     private JButton startFilter;
     private JButton pauseFilter;
+    private JButton resetFilter;
     private boolean showImage;
     private BufferedImage dotImage;
 
@@ -51,6 +55,10 @@ public class GUIframe implements Engine.EngineClient {
 
         // - add buttons
         JButton openImage = new JButton("Open Image");
+        startFilter = new JButton("Start filter");
+        pauseFilter = new JButton("Pause filter");
+        resetFilter = new JButton("Restart filter");
+        
         openImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -223,12 +231,24 @@ public class GUIframe implements Engine.EngineClient {
         renderSpeed_value.setSize(20, 20);
         renderSpeed_value.setMaximumSize(dim);
         renderSpeed_value.setText("100%");
-        renderSpeed_slider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                renderSpeed_value.setText(String.valueOf(renderSpeed_slider
+        renderSpeed_slider.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				renderSpeed_value.setText(String.valueOf(renderSpeed_slider
                         .getValue() + "%"));
-            }
+                if (engine.isTimerRunning()) {
+	                pauseFilter.doClick();
+	                startFilter.doClick();
+                }
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mousePressed(MouseEvent e) {}
         });
 
         // setup the panels
@@ -240,7 +260,8 @@ public class GUIframe implements Engine.EngineClient {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         // setup the button panel
-        Container contentPane = window.getContentPane();
+        @SuppressWarnings("unused")
+		Container contentPane = window.getContentPane();
 
         buttonsPanel.add(openImage);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
@@ -265,9 +286,8 @@ public class GUIframe implements Engine.EngineClient {
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(renderSpeed_slider);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
-        buttonsPanel.add(renderSpeed_value);
-
-        startFilter = new JButton("Start filter");
+        //buttonsPanel.add(renderSpeed_value);
+        
         buttonsPanel.add(startFilter);
         startFilter.addActionListener(new ActionListener() {
             @Override
@@ -287,7 +307,6 @@ public class GUIframe implements Engine.EngineClient {
             }
         });
 
-        pauseFilter = new JButton("Pause filter");
         buttonsPanel.add(pauseFilter);
         pauseFilter.setVisible(false);
         startFilter.setVisible(true);
@@ -296,13 +315,32 @@ public class GUIframe implements Engine.EngineClient {
             public void actionPerformed(ActionEvent e) {
                 pauseFilter.setVisible(false);
                 startFilter.setVisible(true);
-                /*
-                 *  TODO: Add actions to pause drawing here
-                 */
                 engine.stopTimer();
             }
         });
-
+        
+        buttonsPanel.add(resetFilter);
+        resetFilter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+		        if (engine.isTimerRunning()) {
+		            pauseFilter.doClick();
+		        }
+		        int confirmation = JOptionPane.showConfirmDialog(null, 
+                        "Are you sure you want to reset the canvas to the starting image?", 
+                        "Choose", 
+                        JOptionPane.YES_NO_OPTION
+                ); 
+				if (confirmation == JOptionPane.YES_OPTION) {
+					if (DEBUG) {
+						System.out.println("YES");
+					}
+					// TODO: Reload original image to application
+					// May have to place open image into it's own function
+				}
+            }
+        });
+        
         canvasPanel.add(canvas);
         mainPanel.add(buttonsPanel);
         mainPanel.add(canvasPanel);
