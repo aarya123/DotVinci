@@ -1,47 +1,31 @@
 import pixelator.*;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class Engine {
 
-    private BufferedImage image;
-    private Filter filter;
-    private long startTime;
-    private long timeToRun;
-    private EngineClient engineClient;
     final SepiaFilter SEPIA_FILTER = new SepiaFilter();
     final GrayScaleFilter GRAYSCALE_FILTER = new GrayScaleFilter();
     final NegativeFilter NEGATIVE_FILTER = new NegativeFilter();
     final RGBFilter RGB_FILTER = new RGBFilter();
+    private BufferedImage image;
+    private Filter filter;
+    private long startTime;
+    private EngineClient engineClient;
     private long dotTimeDelta;
     private long lastExec;
     private Thread drawer;
 
 
-    public interface EngineClient {
-        public void onTimerTick();
-    }
-
     public Engine() {
         startTime = -1;
-        timeToRun = -1;
         filter = Filter.NORMAL;
-    }
-
-    public enum Filter {
-        SEPIA,
-        GRAYSCALE,
-        NEGATIVE,
-        NORMAL
     }
 
     public void setEngineClient(EngineClient engineClient) {
@@ -64,16 +48,16 @@ public class Engine {
         this.filter = filter;
     }
 
-    public void setImage(BufferedImage image) {
-        this.image = image;
-    }
-
     public void loadImageFromFile(File file) throws IOException {
         image = ImageIO.read(new FileInputStream(file.toString()));
     }
 
     public BufferedImage getImage() {
         return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 
     public boolean hasImage() {
@@ -128,18 +112,29 @@ public class Engine {
     }
 
     public void drawImage(Graphics g) {
-        if(hasImage()) {
+        if (hasImage()) {
             g.drawImage(image, 0, 0, null);
         }
+    }
+
+    public enum Filter {
+        SEPIA,
+        GRAYSCALE,
+        NEGATIVE,
+        NORMAL
+    }
+
+    public interface EngineClient {
+        public void onTimerTick();
     }
 
     class UpdateImage extends Thread {
         @Override
         public void run() {
-            
-            while(!isInterrupted()) {
+
+            while (!isInterrupted()) {
                 boolean canTick = (System.currentTimeMillis() - lastExec) >= dotTimeDelta;
-                if(canTick) {
+                if (canTick) {
                     lastExec = System.currentTimeMillis();
                     engineClient.onTimerTick();
                 }

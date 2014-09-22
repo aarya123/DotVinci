@@ -9,28 +9,24 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class GUIframe implements Engine.EngineClient {
     boolean DEBUG = true;
+    BufferedImage image;
+    String suffices[];
     private JFrame window;
-
     private JPanel mainPanel; // the main Panel will have sub panels
     private JPanel canvasPanel;
     private JPanel buttonsPanel;
-    BufferedImage image;
     private JPanel canvas;
-    String suffices[];
     private Engine engine;
     private JButton startFilter;
     private JButton pauseFilter;
     private boolean showImage;
     private BufferedImage dotImage;
 
-    public GUIframe(int width, int height) throws FileNotFoundException,
-            IOException {
-
+    public GUIframe(int width, int height) throws IOException {
 
         showImage = true;
         window = new JFrame("Dot Vinci");
@@ -60,10 +56,10 @@ public class GUIframe implements Engine.EngineClient {
             public void actionPerformed(ActionEvent e) {
                 if (engine.isTimerRunning()) {
                     // Pause drawing on canvas to load image
-                	for(ActionListener a: pauseFilter.getActionListeners()) {
-                	    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
-                	    });
-                	}
+                    for (ActionListener a : pauseFilter.getActionListeners()) {
+                        a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+                        });
+                    }
                 }
                 // open a JFilesChooser when the open button is clicked
                 JFileChooser chooser = new JFileChooser();
@@ -109,17 +105,17 @@ public class GUIframe implements Engine.EngineClient {
             public void actionPerformed(ActionEvent e) {
                 if (engine.isTimerRunning()) {
                     // Pause drawing on canvas to save image
-                	for(ActionListener a: pauseFilter.getActionListeners()) {
-                	    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
-                	    });
-                	}
+                    for (ActionListener a : pauseFilter.getActionListeners()) {
+                        a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+                        });
+                    }
                 }
                 /*
                  * TODO: Add save code here
                  */
             }
-        });        
-        
+        });
+
         // - add filters
         JLabel filterText = new JLabel("Filters:");
         final JRadioButton noFilter = new JRadioButton("None");
@@ -134,7 +130,7 @@ public class GUIframe implements Engine.EngineClient {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (noFilter.isSelected() == false) {
+                if (!noFilter.isSelected()) {
                     noFilter.setSelected(true);
                     engine.setFilter(Engine.Filter.NORMAL);
                 }
@@ -144,7 +140,7 @@ public class GUIframe implements Engine.EngineClient {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (sepiaFilter.isSelected() == false) {
+                if (!sepiaFilter.isSelected()) {
                     sepiaFilter.setSelected(true);
                     engine.setFilter(Engine.Filter.SEPIA);
                 }
@@ -154,7 +150,7 @@ public class GUIframe implements Engine.EngineClient {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (negativeFilter.isSelected() == false) {
+                if (!negativeFilter.isSelected()) {
                     negativeFilter.setSelected(true);
                     engine.setFilter(Engine.Filter.NEGATIVE);
                 }
@@ -165,7 +161,7 @@ public class GUIframe implements Engine.EngineClient {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (grayscaleFilter.isSelected() == false) {
+                if (!grayscaleFilter.isSelected()) {
                     grayscaleFilter.setSelected(true);
                     engine.setFilter(Engine.Filter.GRAYSCALE);
                 }
@@ -177,7 +173,7 @@ public class GUIframe implements Engine.EngineClient {
 
             @Override
             public void stateChanged(ChangeEvent e) {
-                if (noFilter.isSelected() == true) {
+                if (noFilter.isSelected()) {
                     sepiaFilter.setSelected(false);
                     grayscaleFilter.setSelected(false);
                     negativeFilter.setSelected(false);
@@ -188,7 +184,7 @@ public class GUIframe implements Engine.EngineClient {
 
             @Override
             public void stateChanged(ChangeEvent e) {
-                if (sepiaFilter.isSelected() == true) {
+                if (sepiaFilter.isSelected()) {
                     noFilter.setSelected(false);
                     grayscaleFilter.setSelected(false);
                     negativeFilter.setSelected(false);
@@ -199,7 +195,7 @@ public class GUIframe implements Engine.EngineClient {
 
             @Override
             public void stateChanged(ChangeEvent e) {
-                if (negativeFilter.isSelected() == true) {
+                if (negativeFilter.isSelected()) {
                     sepiaFilter.setSelected(false);
                     grayscaleFilter.setSelected(false);
                     noFilter.setSelected(false);
@@ -210,7 +206,7 @@ public class GUIframe implements Engine.EngineClient {
 
             @Override
             public void stateChanged(ChangeEvent e) {
-                if (grayscaleFilter.isSelected() == true) {
+                if (grayscaleFilter.isSelected()) {
                     sepiaFilter.setSelected(false);
                     noFilter.setSelected(false);
                     negativeFilter.setSelected(false);
@@ -223,9 +219,10 @@ public class GUIframe implements Engine.EngineClient {
         final JSlider renderSpeed_slider = new JSlider(1, 100);
         final JTextField renderSpeed_value = new JTextField(3);
         Dimension dim = new Dimension(40, 30);
+        renderSpeed_slider.setValue(100);
         renderSpeed_value.setSize(20, 20);
         renderSpeed_value.setMaximumSize(dim);
-        renderSpeed_value.setText("50%");
+        renderSpeed_value.setText("100%");
         renderSpeed_slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -281,7 +278,7 @@ public class GUIframe implements Engine.EngineClient {
                     return;
                 }
                 engine.startTimer(renderSpeed_slider.getValue());
-                if(showImage == true) {
+                if (showImage) {
                     clearDotImage();
                 }
                 showImage = false;
@@ -289,7 +286,7 @@ public class GUIframe implements Engine.EngineClient {
                 startFilter.setVisible(false);
             }
         });
-        
+
         pauseFilter = new JButton("Pause filter");
         buttonsPanel.add(pauseFilter);
         pauseFilter.setVisible(false);
@@ -297,7 +294,7 @@ public class GUIframe implements Engine.EngineClient {
         pauseFilter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	pauseFilter.setVisible(false);
+                pauseFilter.setVisible(false);
                 startFilter.setVisible(true);
                 /*
                  *  TODO: Add actions to pause drawing here
@@ -305,7 +302,7 @@ public class GUIframe implements Engine.EngineClient {
                 engine.stopTimer();
             }
         });
-        
+
         canvasPanel.add(canvas);
         mainPanel.add(buttonsPanel);
         mainPanel.add(canvasPanel);
@@ -318,25 +315,6 @@ public class GUIframe implements Engine.EngineClient {
         window.setVisible(true);
     }
 
-    class MyCanvas extends JPanel {
-
-        @Override
-        public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if(dotImage != null) {
-                Graphics gImg = dotImage.getGraphics();
-                if(showImage) {
-                    engine.drawImage(gImg);
-                }
-                else {
-                    engine.updateOutput(gImg);
-                }
-                g.drawImage(dotImage, 0, 0, null);
-            }
-        }
-    }
-
-    @Override
     public void onTimerTick() {
         canvas.repaint();
     }
@@ -344,6 +322,22 @@ public class GUIframe implements Engine.EngineClient {
     private void clearDotImage() {
         dotImage.getGraphics().setColor(Color.WHITE);
         dotImage.getGraphics().fillRect(0, 0, dotImage.getWidth(), dotImage.getHeight());
+    }
+
+    class MyCanvas extends JPanel {
+
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (dotImage != null) {
+                Graphics gImg = dotImage.getGraphics();
+                if (showImage) {
+                    engine.drawImage(gImg);
+                } else {
+                    engine.updateOutput(gImg);
+                }
+                g.drawImage(dotImage, 0, 0, null);
+            }
+        }
     }
 
 }
