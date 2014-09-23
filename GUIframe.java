@@ -323,11 +323,16 @@ public class GUIframe implements Engine.EngineClient {
         resetFilter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	boolean interrupt = false;
 		        if (engine.isTimerRunning()) {
+		        	// Pause drawing
 		            pauseFilter.doClick();
+		            if (!showImage) {
+		            	interrupt = true;
+		            }
 		        }
 		        int confirmation = JOptionPane.showConfirmDialog(null, 
-                        "Are you sure you want to reset the canvas to the starting image?", 
+                        "Are you sure you want to reset to the starting image?", 
                         "Choose", 
                         JOptionPane.YES_NO_OPTION
                 ); 
@@ -335,8 +340,22 @@ public class GUIframe implements Engine.EngineClient {
 					if (DEBUG) {
 						System.out.println("YES");
 					}
-					// TODO: Reload original image to application
-					// May have to place open image into it's own function
+					// Reset canvas to original image
+					engine.setImage(image);
+					showImage = true;
+					clearDotImage();
+					canvas.repaint();
+					engine.startTimer(renderSpeed_slider.getValue());  
+							// I'm not sure why this works, but it does?
+				}
+				else {
+					if (DEBUG) {
+						System.out.println("NO");
+					}
+					if (interrupt) {
+						// Continue draw operation
+						startFilter.doClick();
+					}
 				}
             }
         });
