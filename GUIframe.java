@@ -135,43 +135,37 @@ public class GUIframe implements Engine.EngineClient {
 
         //prevent user from unchecking a radio button
         noFilter.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (!noFilter.isSelected()) {
                     noFilter.setSelected(true);
-                    engine.setFilter(Engine.Filter.NORMAL);
                 }
             }
         });
+        
         sepiaFilter.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (!sepiaFilter.isSelected()) {
                     sepiaFilter.setSelected(true);
-                    engine.setFilter(Engine.Filter.SEPIA);
                 }
             }
         });
+        
         negativeFilter.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (!negativeFilter.isSelected()) {
                     negativeFilter.setSelected(true);
-                    engine.setFilter(Engine.Filter.NEGATIVE);
                 }
-
             }
         });
+        
         grayscaleFilter.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (!grayscaleFilter.isSelected()) {
                     grayscaleFilter.setSelected(true);
-                    engine.setFilter(Engine.Filter.GRAYSCALE);
                 }
             }
         });
@@ -185,7 +179,12 @@ public class GUIframe implements Engine.EngineClient {
                     sepiaFilter.setSelected(false);
                     grayscaleFilter.setSelected(false);
                     negativeFilter.setSelected(false);
+                    engine.setFilter(Engine.Filter.NORMAL);
                 }
+                if (DEBUG) { 
+            		System.out.println("NORMAL");
+            		System.out.println(engine.getFilter()); 
+            	}
             }
         });
         sepiaFilter.addChangeListener(new ChangeListener() {
@@ -196,6 +195,11 @@ public class GUIframe implements Engine.EngineClient {
                     noFilter.setSelected(false);
                     grayscaleFilter.setSelected(false);
                     negativeFilter.setSelected(false);
+                    engine.setFilter(Engine.Filter.SEPIA);
+                }
+                if (DEBUG) { 
+            		System.out.println("SEPIA");
+            		System.out.println(engine.getFilter()); 
                 }
             }
         });
@@ -207,7 +211,12 @@ public class GUIframe implements Engine.EngineClient {
                     sepiaFilter.setSelected(false);
                     grayscaleFilter.setSelected(false);
                     noFilter.setSelected(false);
+                    engine.setFilter(Engine.Filter.NEGATIVE);
                 }
+                if (DEBUG) { 
+            		System.out.println("NEGATIVE");
+            		System.out.println(engine.getFilter()); 
+            	}
             }
         });
         grayscaleFilter.addChangeListener(new ChangeListener() {
@@ -218,7 +227,12 @@ public class GUIframe implements Engine.EngineClient {
                     sepiaFilter.setSelected(false);
                     noFilter.setSelected(false);
                     negativeFilter.setSelected(false);
+                    engine.setFilter(Engine.Filter.GRAYSCALE);
                 }
+                if (DEBUG) { 
+            		System.out.println("GRAYSCALE");
+            		System.out.println(engine.getFilter()); 
+            	}
             }
         });
 
