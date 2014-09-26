@@ -27,6 +27,7 @@ public class GUIframe implements Engine.EngineClient {
     private JButton startFilter;
     private JButton pauseFilter;
     private JButton resetFilter;
+    private JButton immediateFilter;
     private boolean showImage;
     private BufferedImage dotImage;
 
@@ -58,7 +59,7 @@ public class GUIframe implements Engine.EngineClient {
         startFilter = new JButton("Start filter");
         pauseFilter = new JButton("Pause filter");
         resetFilter = new JButton("Restart filter");
-        
+        immediateFilter = new JButton("Immediate filter");
         openImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -349,14 +350,14 @@ public class GUIframe implements Engine.EngineClient {
                         "Are you sure you want to reset to the starting image?", 
                         "Choose", 
                         JOptionPane.YES_NO_OPTION
-                ); 
+                	); 
 				if (confirmation == JOptionPane.YES_OPTION) {
 					if (DEBUG) {
 						System.out.println("YES");
 					}
 					// Reset canvas to original image
 					engine.setImage(image);
-					showImage = true;
+					showImage = false;
 					clearDotImage();
 					canvas.repaint();
 					engine.startTimer(renderSpeed_slider.getValue());  
@@ -373,6 +374,19 @@ public class GUIframe implements Engine.EngineClient {
 				}
             }
         });
+
+	buttonsPanel.add(immediateFilter);
+	immediateFilter.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(!engine.isTimerRunning()) {
+				clearDotImage();
+				canvas.repaint();
+				showImage = false;
+				engine.drawOutputFast(dotImage.getGraphics());
+			}
+		}
+	});
         
         canvasPanel.add(canvas);
         mainPanel.add(buttonsPanel);
@@ -390,6 +404,10 @@ public class GUIframe implements Engine.EngineClient {
         canvas.repaint();
     }
 
+    public void forceRedraw() {
+	canvas.repaint();
+    }
+
     private void clearDotImage() {
         dotImage.getGraphics().setColor(Color.WHITE);
         dotImage.getGraphics().fillRect(0, 0, dotImage.getWidth(), dotImage.getHeight());
@@ -401,11 +419,11 @@ public class GUIframe implements Engine.EngineClient {
             super.paintComponent(g);
             if (dotImage != null) {
                 Graphics gImg = dotImage.getGraphics();
-                if (showImage) {
-                    engine.drawImage(gImg);
-                } else {
-                    engine.updateOutput(gImg);
-                }
+		if (showImage) {
+		    engine.drawImage(gImg);
+		} else {
+		    engine.updateOutput(gImg);
+		}
                 g.drawImage(dotImage, 0, 0, null);
             }
         }

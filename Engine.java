@@ -14,6 +14,7 @@ public class Engine {
     final GrayScaleFilter GRAYSCALE_FILTER = new GrayScaleFilter();
     final NegativeFilter NEGATIVE_FILTER = new NegativeFilter();
     final RGBFilter RGB_FILTER = new RGBFilter();
+    private static final int FAST_OUTPUT_ITERATIONS = 50000;
     private BufferedImage image;
     private Filter filter;
     private long startTime;
@@ -92,23 +93,42 @@ public class Engine {
         return System.currentTimeMillis() - startTime;
     }
 
+    private void drawDot(Graphics g) {
+    	int x = (int) (getImage().getWidth() * Math.random());
+    	int y = (int) (getImage().getHeight() * Math.random());
+	Color color = new Color(getImage().getRGB(x, y));
+	Pixel pixel = new Pixel(x, y, color.getRed(), color.getGreen(), color.getBlue());
+	pixel = getFilter().filterPixel(pixel);
+	//TODO Shapes
+	//TODO Radius
+	g.setColor(pixel.getColor());
+	x = (int) (pixel.getX() - 5);
+	y = (int) (pixel.getY() - 5);
+	x = x < 0 ? 0 : x;
+	y = y < 0 ? 0 : y;
+	g.fillOval(x, y, 10, 10);
+    }
+
     public void updateOutput(Graphics g) {
         if (hasImage()) {
-            int x = (int) (getImage().getWidth() * Math.random());
-            int y = (int) (getImage().getHeight() * Math.random());
-            Color color = new Color(getImage().getRGB(x, y));
-            Pixel pixel = new Pixel(x, y, color.getRed(), color.getGreen(), color.getBlue());
-            pixel = getFilter().filterPixel(pixel);
-            //TODO Shapes
-            //TODO Radius
-            g.setColor(pixel.getColor());
-            x = (int) (pixel.getX() - 5);
-            y = (int) (pixel.getY() - 5);
-            x = x < 0 ? 0 : x;
-            y = y < 0 ? 0 : y;
-            g.fillOval(x, y, 10, 10);
-//			g.drawImage(getImage(), 0, 0, canvas);
+            drawDot(g);
+	    //			g.drawImage(getImage(), 0, 0, canvas);
         }
+    }
+
+    public void drawOutputFast(Graphics g) {
+	if (hasImage()) {
+		new Thread() {
+			@Override
+			public void run() {
+				for(int i = 0; i < FAST_OUTPUT_ITERATIONS; i++) {
+					drawDot(g);
+				}
+				engineClient.forceRedraw();
+
+			}
+		}.start();
+	}
     }
 
     public void drawImage(Graphics g) {
@@ -126,6 +146,7 @@ public class Engine {
 
     public interface EngineClient {
         public void onTimerTick();
+	public void forceRedraw();
     }
 
     class UpdateImage extends Thread {
