@@ -380,6 +380,7 @@ public class GUIframe implements Engine.EngineClient {
 	immediateFilter.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			engine.stopTimer();
 			if(!engine.isTimerRunning()) {
 				clearDotImage();
 				canvas.repaint();
