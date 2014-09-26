@@ -1,47 +1,32 @@
 import pixelator.*;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class Engine {
 
-    private BufferedImage image;
-    private Filter filter;
-    private long startTime;
-    private long timeToRun;
-    private EngineClient engineClient;
     final SepiaFilter SEPIA_FILTER = new SepiaFilter();
     final GrayScaleFilter GRAYSCALE_FILTER = new GrayScaleFilter();
     final NegativeFilter NEGATIVE_FILTER = new NegativeFilter();
     final RGBFilter RGB_FILTER = new RGBFilter();
+    private static final int FAST_OUTPUT_ITERATIONS =700000;
+    private BufferedImage image;
+    private Filter filter;
+    private long startTime;
+    private EngineClient engineClient;
     private long dotTimeDelta;
     private long lastExec;
     private Thread drawer;
 
 
-    public interface EngineClient {
-        public void onTimerTick();
-    }
-
     public Engine() {
         startTime = -1;
-        timeToRun = -1;
         filter = Filter.NORMAL;
-    }
-
-    public enum Filter {
-        SEPIA,
-        GRAYSCALE,
-        NEGATIVE,
-        NORMAL
     }
 
     public void setEngineClient(EngineClient engineClient) {
@@ -49,7 +34,6 @@ public class Engine {
     }
 
     public IFilter getFilter() {
-
         if (Filter.SEPIA == filter) {
             return SEPIA_FILTER;
         } else if (Filter.GRAYSCALE == filter) {
@@ -65,16 +49,16 @@ public class Engine {
         this.filter = filter;
     }
 
-    public void setImage(BufferedImage image) {
-        this.image = image;
-    }
-
     public void loadImageFromFile(File file) throws IOException {
         image = ImageIO.read(new FileInputStream(file.toString()));
     }
 
     public BufferedImage getImage() {
         return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 
     public boolean hasImage() {
@@ -109,38 +93,69 @@ public class Engine {
         return System.currentTimeMillis() - startTime;
     }
 
+    private void drawDot(Graphics g) {
+    	int x = (int) (getImage().getWidth() * Math.random());
+    	int y = (int) (getImage().getHeight() * Math.random());
+	Color color = new Color(getImage().getRGB(x, y));
+	Pixel pixel = new Pixel(x, y, color.getRed(), color.getGreen(), color.getBlue());
+	pixel = getFilter().filterPixel(pixel);
+	//TODO Shapes
+	//TODO Radius
+	g.setColor(pixel.getColor());
+	x = (int) (pixel.getX() - 5);
+	y = (int) (pixel.getY() - 5);
+	x = x < 0 ? 0 : x;
+	y = y < 0 ? 0 : y;
+	g.fillOval(x, y, 7, 7);
+    }
+
     public void updateOutput(Graphics g) {
         if (hasImage()) {
-            int x = (int) (getImage().getWidth() * Math.random());
-            int y = (int) (getImage().getHeight() * Math.random());
-            Color color = new Color(getImage().getRGB(x, y));
-            Pixel pixel = new Pixel(x, y, color.getRed(), color.getGreen(), color.getBlue());
-            pixel = getFilter().filterPixel(pixel);
-            //TODO Shapes
-            //TODO Radius
-            g.setColor(pixel.getColor());
-            x = (int) (pixel.getX() - 5);
-            y = (int) (pixel.getY() - 5);
-            x = x < 0 ? 0 : x;
-            y = y < 0 ? 0 : y;
-            g.fillOval(x, y, 10, 10);
-//			g.drawImage(getImage(), 0, 0, canvas);
+            drawDot(g);
+	    //			g.drawImage(getImage(), 0, 0, canvas);
         }
     }
 
+    public void drawOutputFast(final Graphics g) {
+	if (hasImage()) {
+		new Thread() {
+			@Override
+			public void run() {
+				for(int i = 0; i < FAST_OUTPUT_ITERATIONS; i++) {
+					drawDot(g);
+				}
+				engineClient.forceRedraw();
+
+			}
+		}.start();
+	}
+    }
+
     public void drawImage(Graphics g) {
-        if(hasImage()) {
+        if (hasImage()) {
             g.drawImage(image, 0, 0, null);
         }
+    }
+
+    public enum Filter {
+        SEPIA,
+        GRAYSCALE,
+        NEGATIVE,
+        NORMAL
+    }
+
+    public interface EngineClient {
+        public void onTimerTick();
+	public void forceRedraw();
     }
 
     class UpdateImage extends Thread {
         @Override
         public void run() {
-            
-            while(!isInterrupted()) {
+
+            while (!isInterrupted()) {
                 boolean canTick = (System.currentTimeMillis() - lastExec) >= dotTimeDelta;
-                if(canTick) {
+                if (canTick) {
                     lastExec = System.currentTimeMillis();
                     engineClient.onTimerTick();
                 }
