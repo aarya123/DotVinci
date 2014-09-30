@@ -10,6 +10,8 @@ import java.io.IOException;
 
 public class Engine {
 
+	boolean DEBUG = false;
+	
     final SepiaFilter SEPIA_FILTER = new SepiaFilter();
     final GrayScaleFilter GRAYSCALE_FILTER = new GrayScaleFilter();
     final NegativeFilter NEGATIVE_FILTER = new NegativeFilter();
@@ -73,7 +75,9 @@ public class Engine {
             doubleSliderVal /= 100.0;
             doubleSliderVal = 1 - doubleSliderVal;
             dotTimeDelta = (long) (defaultDelta * doubleSliderVal);
-            System.out.println("dotTimeDelta " + dotTimeDelta);
+            if (DEBUG) {
+            	System.out.println("dotTimeDelta " + dotTimeDelta);
+            }
             drawer = new UpdateImage();
             drawer.start();
         }

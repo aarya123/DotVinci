@@ -103,7 +103,9 @@ public class GUIframe implements Engine.EngineClient {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                    System.out.println(file);
+                    if (DEBUG) {
+                    	System.out.println(file);
+                    }
                 }
 
             }
@@ -361,8 +363,12 @@ public class GUIframe implements Engine.EngineClient {
 					showImage = false;
 					clearDotImage();
 					canvas.repaint();
-					engine.startTimer(renderSpeed_slider.getValue());  
-							// I'm not sure why this works, but it does?
+					if (interrupt) {
+						startFilter.doClick();
+					}
+					else {
+						showImage = true;
+					}
 				}
 				else {
 					if (DEBUG) {
@@ -381,6 +387,7 @@ public class GUIframe implements Engine.EngineClient {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			engine.stopTimer();
+			pauseFilter.doClick();
 			if(!engine.isTimerRunning()) {
 				clearDotImage();
 				canvas.repaint();
