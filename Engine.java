@@ -10,13 +10,11 @@ import java.io.IOException;
 
 public class Engine {
 
-	boolean DEBUG = false;
-	
+    private static final int FAST_OUTPUT_ITERATIONS = 700000;
     final SepiaFilter SEPIA_FILTER = new SepiaFilter();
     final GrayScaleFilter GRAYSCALE_FILTER = new GrayScaleFilter();
     final NegativeFilter NEGATIVE_FILTER = new NegativeFilter();
     final RGBFilter RGB_FILTER = new RGBFilter();
-    private static final int FAST_OUTPUT_ITERATIONS =700000;
     private BufferedImage image;
     private Filter filter;
     private long startTime;
@@ -75,8 +73,8 @@ public class Engine {
             doubleSliderVal /= 100.0;
             doubleSliderVal = 1 - doubleSliderVal;
             dotTimeDelta = (long) (defaultDelta * doubleSliderVal);
-            if (DEBUG) {
-            	System.out.println("dotTimeDelta " + dotTimeDelta);
+            if (Main.DEBUG) {
+                System.out.println("dotTimeDelta " + dotTimeDelta);
             }
             drawer = new UpdateImage();
             drawer.start();
@@ -98,41 +96,41 @@ public class Engine {
     }
 
     private void drawDot(Graphics g) {
-    	int x = (int) (getImage().getWidth() * Math.random());
-    	int y = (int) (getImage().getHeight() * Math.random());
-	Color color = new Color(getImage().getRGB(x, y));
-	Pixel pixel = new Pixel(x, y, color.getRed(), color.getGreen(), color.getBlue());
-	pixel = getFilter().filterPixel(pixel);
-	//TODO Shapes
-	//TODO Radius
-	g.setColor(pixel.getColor());
-	x = (int) (pixel.getX() - 5);
-	y = (int) (pixel.getY() - 5);
-	x = x < 0 ? 0 : x;
-	y = y < 0 ? 0 : y;
-	g.fillOval(x, y, 7, 7);
+        int x = (int) (getImage().getWidth() * Math.random());
+        int y = (int) (getImage().getHeight() * Math.random());
+        Color color = new Color(getImage().getRGB(x, y));
+        Pixel pixel = new Pixel(x, y, color.getRed(), color.getGreen(), color.getBlue());
+        pixel = getFilter().filterPixel(pixel);
+        //TODO Shapes
+        //TODO Radius
+        g.setColor(pixel.getColor());
+        x = (int) (pixel.getX() - 5);
+        y = (int) (pixel.getY() - 5);
+        x = x < 0 ? 0 : x;
+        y = y < 0 ? 0 : y;
+        g.fillOval(x, y, 7, 7);
     }
 
     public void updateOutput(Graphics g) {
         if (hasImage()) {
             drawDot(g);
-	    //			g.drawImage(getImage(), 0, 0, canvas);
+            //			g.drawImage(getImage(), 0, 0, canvas);
         }
     }
 
     public void drawOutputFast(final Graphics g) {
-	if (hasImage()) {
-		new Thread() {
-			@Override
-			public void run() {
-				for(int i = 0; i < FAST_OUTPUT_ITERATIONS; i++) {
-					drawDot(g);
-				}
-				engineClient.forceRedraw();
+        if (hasImage()) {
+            new Thread() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < FAST_OUTPUT_ITERATIONS; i++) {
+                        drawDot(g);
+                    }
+                    engineClient.forceRedraw();
 
-			}
-		}.start();
-	}
+                }
+            }.start();
+        }
     }
 
     public void drawImage(Graphics g) {
@@ -150,7 +148,8 @@ public class Engine {
 
     public interface EngineClient {
         public void onTimerTick();
-	public void forceRedraw();
+
+        public void forceRedraw();
     }
 
     class UpdateImage extends Thread {
