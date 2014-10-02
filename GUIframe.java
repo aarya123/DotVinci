@@ -467,7 +467,6 @@ public class GUIframe implements Engine.EngineClient {
                 startFilter.setVisible(false);
             }
         });
-        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(pauseFilter);
         pauseFilter.setVisible(false);
         startFilter.setVisible(true);
