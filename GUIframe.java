@@ -425,7 +425,7 @@ public class GUIframe implements Engine.EngineClient {
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(renderSpeed_slider);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
-        buttonsPanel.add(renderSpeed_value);
+        // buttonsPanel.add(renderSpeed_value);
         
         JPanel shapePanel = new JPanel();
         shapePanel.setLayout(new BoxLayout(shapePanel, BoxLayout.X_AXIS));
@@ -442,7 +442,7 @@ public class GUIframe implements Engine.EngineClient {
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(dotSize_slider);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
-        buttonsPanel.add(dotSize_value);
+        // buttonsPanel.add(dotSize_value);
         
         buttonsPanel.add(startFilter);
         startFilter.addActionListener(new ActionListener() {
