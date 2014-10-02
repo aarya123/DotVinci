@@ -136,8 +136,10 @@ public class GUIframe implements Engine.EngineClient {
                 System.out.println(saveName + "\n\n");
                 
                 try {
-                    // retrieve image
-                	BufferedImage bi = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+                    // save image
+                    BufferedImage bi = new BufferedImage(
+                            canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                    		canvas.paint(bi.getGraphics());
                     ImageIO.write(bi, "png", file);
                 } catch (IOException e1) {
                     e1.printStackTrace();
