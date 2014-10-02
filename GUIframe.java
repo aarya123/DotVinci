@@ -28,6 +28,8 @@ public class GUIframe implements Engine.EngineClient {
     private JButton startFilter;
     private JButton pauseFilter;
     private JButton resetFilter;
+    private JButton saveImage;
+    private JButton shareImage;
     private JButton immediateFilter;
     private boolean showImage;
     private BufferedImage dotImage;
@@ -57,10 +59,13 @@ public class GUIframe implements Engine.EngineClient {
 
         // - add buttons
         JButton openImage = new JButton("Open Image");
-        startFilter = new JButton("Start filter");
-        pauseFilter = new JButton("Pause filter");
-        resetFilter = new JButton("Restart filter");
-        immediateFilter = new JButton("Immediate filter");
+        startFilter = new JButton("Draw");
+        pauseFilter = new JButton("Pause");
+        resetFilter = new JButton("Re-draw");
+        immediateFilter = new JButton("Quick Draw");
+        saveImage = new JButton("Save Image");
+        shareImage = new JButton("Share Image");
+        
         openImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -111,8 +116,7 @@ public class GUIframe implements Engine.EngineClient {
             }
         });
 
-        JButton saveImage = new JButton("Save Image");
-        openImage.addActionListener(new ActionListener() {
+        saveImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (engine.isTimerRunning()) {
@@ -127,6 +131,7 @@ public class GUIframe implements Engine.EngineClient {
                  */
             }
         });
+        
 
         // - add filters
         JLabel filterText = new JLabel("Filters:");
@@ -240,7 +245,7 @@ public class GUIframe implements Engine.EngineClient {
             }
         });
 
-        // - add slider
+        // - add render speed slider
         JLabel renderSpeedText = new JLabel("Render Speed:");
         final JSlider renderSpeed_slider = new JSlider(1, 100);
         final JTextField renderSpeed_value = new JTextField(3);
@@ -268,13 +273,127 @@ public class GUIframe implements Engine.EngineClient {
 			@Override
 			public void mousePressed(MouseEvent e) {}
         });
+        
+        // - add dot size slider
+        JLabel dotSizeText = new JLabel("Pixel Size:");
+        final JSlider dotSize_slider = new JSlider(6, 15);
+        final JTextField dotSize_value = new JTextField(3);
+        Dimension dim2 = new Dimension(40, 30);
+        dotSize_slider.setValue(100);
+        dotSize_slider.setValue(6);
+        dotSize_value.setSize(20, 20);
+        dotSize_value.setMaximumSize(dim2);
+        dotSize_value.setText("6 px");
+        dotSize_slider.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				dotSize_value.setText(String.valueOf(dotSize_slider
+                        .getValue() + " px"));
+                if (engine.isTimerRunning()) {
+	                pauseFilter.doClick();
+	                startFilter.doClick();
+                }
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+        });
+        
+        
+        // - add dot shape options
+        JLabel dotShapeText = new JLabel("Pixel Shape:");
+        final JRadioButton circleShape = new JRadioButton("Circle");
+        noFilter.setSelected(true);
+        final JRadioButton squareShape = new JRadioButton("Square");
+        final JRadioButton triangleShape = new JRadioButton("Triangle");
+
+        //prevent user from unchecking a radio button
+        circleShape.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (!circleShape.isSelected()) {
+                	circleShape.setSelected(true);
+                }
+            }
+        });
+        
+        squareShape.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (!squareShape.isSelected()) {
+                	squareShape.setSelected(true);
+                }
+            }
+        });
+        
+        triangleShape.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (!triangleShape.isSelected()) {
+                	triangleShape.setSelected(true);
+                }
+            }
+        });
+        
+
+        //uncheck all other radio buttons when the user checks a radio button
+        circleShape.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (circleShape.isSelected()) {
+                	squareShape.setSelected(false);
+                	triangleShape.setSelected(false);
+                    //engine.setFilter(Engine.Filter.NORMAL);
+                }
+                if (DEBUG) { 
+            		System.out.println("CIRCLE SHAPE");
+            		//System.out.println(engine.getFilter()); 
+            	}
+            }
+        });
+        squareShape.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (squareShape.isSelected()) {
+                	circleShape.setSelected(false);
+                	triangleShape.setSelected(false);
+                    //engine.setFilter(Engine.Filter.SEPIA);
+                }
+                if (DEBUG) { 
+            		System.out.println("SQUARE SHAPE");
+            		//System.out.println(engine.getFilter()); 
+                }
+            }
+        });
+        triangleShape.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (triangleShape.isSelected()) {
+                	squareShape.setSelected(false);
+                    circleShape.setSelected(false);
+                    //engine.setFilter(Engine.Filter.NEGATIVE);
+                }
+                if (DEBUG) { 
+            		System.out.println("TRIANGLE SHAPE");
+            		//System.out.println(engine.getFilter()); 
+            	}
+            }
+        });
 
         // setup the panels
         mainPanel = new JPanel();
         canvasPanel = new JPanel();
         buttonsPanel = new JPanel();
         // buttonsPanel.setBounds(0, 0, 300, 300);
-        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         // setup the button panel
@@ -284,6 +403,8 @@ public class GUIframe implements Engine.EngineClient {
         buttonsPanel.add(openImage);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(saveImage);
+        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+        buttonsPanel.add(shareImage);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 20)));
         buttonsPanel.add(filterText);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
@@ -297,14 +418,31 @@ public class GUIframe implements Engine.EngineClient {
         filterPanel.add(sepiaFilter);
         filterPanel.add(grayscaleFilter);
         filterPanel.add(negativeFilter);
-
         buttonsPanel.add(filterPanel);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+        
         buttonsPanel.add(renderSpeedText);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(renderSpeed_slider);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
-        //buttonsPanel.add(renderSpeed_value);
+        buttonsPanel.add(renderSpeed_value);
+        
+        JPanel shapePanel = new JPanel();
+        shapePanel.setLayout(new BoxLayout(shapePanel, BoxLayout.X_AXIS));
+        shapePanel.add(Box.createRigidArea(new Dimension(10, 20)));
+        shapePanel.add(dotShapeText);
+        shapePanel.add(Box.createRigidArea(new Dimension(10, 20)));
+        shapePanel.add(circleShape);
+        shapePanel.add(squareShape);
+        shapePanel.add(triangleShape);
+        buttonsPanel.add(shapePanel);
+        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+        
+        buttonsPanel.add(dotSizeText);
+        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+        buttonsPanel.add(dotSize_slider);
+        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+        buttonsPanel.add(dotSize_value);
         
         buttonsPanel.add(startFilter);
         startFilter.addActionListener(new ActionListener() {
