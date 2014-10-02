@@ -23,6 +23,7 @@ public class GUIframe implements Engine.EngineClient {
     private JPanel mainPanel; // the main Panel will have sub panels
     private JPanel canvasPanel;
     private JPanel buttonsPanel;
+    private JPanel tweakablesPanel;
     private JPanel canvas;
     private Engine engine;
     private JButton startFilter;
@@ -392,24 +393,27 @@ public class GUIframe implements Engine.EngineClient {
         mainPanel = new JPanel();
         canvasPanel = new JPanel();
         buttonsPanel = new JPanel();
-        // buttonsPanel.setBounds(0, 0, 300, 300);
+        tweakablesPanel = new JPanel();
+        
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+        tweakablesPanel.setLayout(new BoxLayout(tweakablesPanel, BoxLayout.X_AXIS));
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         // setup the button panel
         @SuppressWarnings("unused")
 		Container contentPane = window.getContentPane();
 
+        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(openImage);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(saveImage);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(shareImage);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 20)));
-        buttonsPanel.add(filterText);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
-
+        buttonsPanel.add(Box.createGlue());
+        
         JPanel filterPanel = new JPanel();
+        filterPanel.add(filterText);
+        filterPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.X_AXIS));
         filterPanel.add(Box.createRigidArea(new Dimension(10, 20)));
         filterPanel.add(filterText);
@@ -418,14 +422,14 @@ public class GUIframe implements Engine.EngineClient {
         filterPanel.add(sepiaFilter);
         filterPanel.add(grayscaleFilter);
         filterPanel.add(negativeFilter);
-        buttonsPanel.add(filterPanel);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+        tweakablesPanel.add(filterPanel);
+        tweakablesPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         
-        buttonsPanel.add(renderSpeedText);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
-        buttonsPanel.add(renderSpeed_slider);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
-        // buttonsPanel.add(renderSpeed_value);
+        tweakablesPanel.add(renderSpeedText);
+        tweakablesPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+        tweakablesPanel.add(renderSpeed_slider);
+        tweakablesPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+        // tweakablesPanel.add(renderSpeed_value);
         
         JPanel shapePanel = new JPanel();
         shapePanel.setLayout(new BoxLayout(shapePanel, BoxLayout.X_AXIS));
@@ -435,15 +439,16 @@ public class GUIframe implements Engine.EngineClient {
         shapePanel.add(circleShape);
         shapePanel.add(squareShape);
         shapePanel.add(triangleShape);
-        buttonsPanel.add(shapePanel);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+        tweakablesPanel.add(shapePanel);
+        tweakablesPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         
-        buttonsPanel.add(dotSizeText);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
-        buttonsPanel.add(dotSize_slider);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
-        // buttonsPanel.add(dotSize_value);
+        tweakablesPanel.add(dotSizeText);
+        tweakablesPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+        tweakablesPanel.add(dotSize_slider);
+        tweakablesPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+        // tweakablesPanel.add(dotSize_value);
         
+        // buttonsPanel.add(Box.createRigidArea(new Dimension(800, 10)));
         buttonsPanel.add(startFilter);
         startFilter.addActionListener(new ActionListener() {
             @Override
@@ -462,7 +467,7 @@ public class GUIframe implements Engine.EngineClient {
                 startFilter.setVisible(false);
             }
         });
-
+        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(pauseFilter);
         pauseFilter.setVisible(false);
         startFilter.setVisible(true);
@@ -474,7 +479,7 @@ public class GUIframe implements Engine.EngineClient {
                 engine.stopTimer();
             }
         });
-        
+        buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(resetFilter);
         resetFilter.addActionListener(new ActionListener() {
             @Override
@@ -519,24 +524,25 @@ public class GUIframe implements Engine.EngineClient {
 				}
             }
         });
-
-	buttonsPanel.add(immediateFilter);
-	immediateFilter.addActionListener(new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			engine.stopTimer();
-			pauseFilter.doClick();
-			if(!engine.isTimerRunning()) {
-				clearDotImage();
-				canvas.repaint();
-				showImage = false;
-				engine.drawOutputFast(dotImage.getGraphics());
+	    buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
+		buttonsPanel.add(immediateFilter);
+		immediateFilter.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				engine.stopTimer();
+				pauseFilter.doClick();
+				if(!engine.isTimerRunning()) {
+					clearDotImage();
+					canvas.repaint();
+					showImage = false;
+					engine.drawOutputFast(dotImage.getGraphics());
+				}
 			}
-		}
-	});
-        
+		});
+		buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         canvasPanel.add(canvas);
         mainPanel.add(buttonsPanel);
+        mainPanel.add(tweakablesPanel);
         mainPanel.add(canvasPanel);
 
         // add the main panel to the window
