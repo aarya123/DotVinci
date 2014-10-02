@@ -111,6 +111,12 @@ public class GUIframe implements Engine.EngineClient {
         saveImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	
+                if (image == null) {
+                    JOptionPane.showMessageDialog(window,
+                            "No image to save, please load one first");
+                    return;
+                }
                 if (engine.isTimerRunning()) {
                     // Pause drawing on canvas to save image
                     for (ActionListener a : pauseFilter.getActionListeners()) {
@@ -121,6 +127,21 @@ public class GUIframe implements Engine.EngineClient {
                 /*
                  * TODO: Add save code here
                  */
+                // open a JFilesChooser when the save button is clicked
+                JFileChooser chooser = new JFileChooser();
+     
+                int ret = chooser.showSaveDialog(null);
+                File file = chooser.getSelectedFile();
+                String saveName = chooser.getSelectedFile().toString();
+                System.out.println(saveName + "\n\n");
+                
+                try {
+                    // retrieve image
+                	BufferedImage bi = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+                    ImageIO.write(bi, "png", file);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
