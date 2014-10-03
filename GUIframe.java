@@ -299,8 +299,6 @@ public class GUIframe implements Engine.EngineClient {
                         canvas.setSize(image.getWidth(), image.getHeight());
                         canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
                         dotImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-                        startFilter.doClick();
-                        pauseFilter.doClick();
                         showImage = true;
                         clearDotImage();
                         canvas.repaint();
@@ -646,7 +644,7 @@ public class GUIframe implements Engine.EngineClient {
         buttonsPanel.add(saveImage);
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(shareImage);
-        buttonsPanel.add(Box.createHorizontalGlue());
+        buttonsPanel.add(Box.createGlue());
 
         JPanel filterPanel = new JPanel();
         filterPanel.add(filterText);
@@ -775,7 +773,6 @@ public class GUIframe implements Engine.EngineClient {
         });
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         canvasPanel.add(canvas);
-        mainPanel.add(Box.createRigidArea(new Dimension(5, 5)));
         mainPanel.add(buttonsPanel);
         mainPanel.add(tweakablesPanel);
         mainPanel.add(canvasPanel);
