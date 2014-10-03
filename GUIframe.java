@@ -31,8 +31,7 @@ public class GUIframe implements Engine.EngineClient {
         showImage = true;
         window = new JFrame("Dot Vinci");
         window.setSize(width, height);
-        dotImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        clearDotImage();
+
         // add canvasPanel objects
         canvas = new MyCanvas();
         canvas.setPreferredSize(new Dimension(width, height));
@@ -94,6 +93,9 @@ public class GUIframe implements Engine.EngineClient {
                         image = ImageIO.read(new FileInputStream(file
                                 .toString()));
                         engine.loadImageFromFile(file);
+                        canvas.setSize(image.getWidth(), image.getHeight());
+                        canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+                        dotImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
                         showImage = true;
                         clearDotImage();
                         canvas.repaint();
