@@ -26,6 +26,18 @@ public class GUIframe implements Engine.EngineClient {
     private boolean showImage;
     private BufferedImage dotImage;
 
+    private void LoadImage(BufferedImage image) {
+    	canvas.setSize(image.getWidth(), image.getHeight());
+        canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+        engine.setImage(image);
+        dotImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        startFilter.doClick();
+        pauseFilter.doClick();
+        showImage = true;
+        clearDotImage();
+        canvas.repaint();
+    }
+    
     public GUIframe(int width, int height) throws IOException {
 
         showImage = true;
@@ -40,11 +52,6 @@ public class GUIframe implements Engine.EngineClient {
         // intialize engine
         engine = new Engine();
         engine.setEngineClient(this);
-        if (Main.DEBUG) {
-            image = ImageIO.read(new FileInputStream("sample.jpg"));
-            engine.setImage(image);
-            System.out.println(String.format("Size is width: %d height: %d", image.getWidth(), image.getHeight()));
-        }
 
         // add buttonsPanel objects
 
@@ -92,15 +99,7 @@ public class GUIframe implements Engine.EngineClient {
                     try {
                         image = ImageIO.read(new FileInputStream(file
                                 .toString()));
-                        engine.loadImageFromFile(file);
-                        canvas.setSize(image.getWidth(), image.getHeight());
-                        canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
-                        dotImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-                        startFilter.doClick();
-                        pauseFilter.doClick();
-                        showImage = true;
-                        clearDotImage();
-                        canvas.repaint();
+                        LoadImage(image);
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -583,6 +582,12 @@ public class GUIframe implements Engine.EngineClient {
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setResizable(true);
         window.setVisible(true);
+        
+        if (Main.DEBUG) {
+            image = ImageIO.read(new FileInputStream("sample.jpg"));
+            LoadImage(image);
+            System.out.println(String.format("Size is width: %d height: %d", image.getWidth(), image.getHeight()));
+        }
     }
 
     public void onTimerTick() {
