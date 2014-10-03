@@ -347,11 +347,14 @@ public class GUIframe implements Engine.EngineClient {
         final JRadioButton triangleShape = new JRadioButton("Triangle");
 
         //prevent user from unchecking a radio button
+        circleShape.setSelected(true);
         circleShape.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (!circleShape.isSelected()) {
                     circleShape.setSelected(true);
+                    squareShape.setSelected(false);
+                    triangleShape.setSelected(false);
                 }
             }
         });
@@ -361,6 +364,8 @@ public class GUIframe implements Engine.EngineClient {
             public void actionPerformed(ActionEvent arg0) {
                 if (!squareShape.isSelected()) {
                     squareShape.setSelected(true);
+                    circleShape.setSelected(false);
+                    triangleShape.setSelected(false);
                 }
             }
         });
@@ -370,6 +375,8 @@ public class GUIframe implements Engine.EngineClient {
             public void actionPerformed(ActionEvent arg0) {
                 if (!triangleShape.isSelected()) {
                     triangleShape.setSelected(true);
+                    circleShape.setSelected(false);
+                    squareShape.setSelected(false);
                 }
             }
         });
