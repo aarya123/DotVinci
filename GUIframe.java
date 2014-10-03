@@ -30,7 +30,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JOptionPane;
-import java.awt.Graphics2D;
 
 public class GUIframe implements Engine.EngineClient {
 
@@ -116,7 +115,6 @@ public class GUIframe implements Engine.EngineClient {
 		});
 
 		JButton saveImage = new JButton("Save Image");
-		JButton shareImage = new JButton("Share Image");
 
 		// - add filters
 		JLabel filterText = new JLabel("Filters:");
@@ -158,8 +156,6 @@ public class GUIframe implements Engine.EngineClient {
 		buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
 		buttonsPanel.add(saveImage);
 		buttonsPanel.add(Box.createRigidArea(new Dimension(5, 20)));
-		buttonsPanel.add(shareImage);
-		buttonsPanel.add(Box.createRigidArea(new Dimension(5, 20)));
 		buttonsPanel.add(filterText);
 		buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
 
@@ -194,31 +190,6 @@ public class GUIframe implements Engine.EngineClient {
 				engine.startTimer(renderSpeed_slider.getValue());
 			}
 		});
-
-		shareImage.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				// share the image
-					BufferedImage share_image=new BufferedImage(image.getWidth(), image.getHeight(),BufferedImage.TYPE_INT_RGB);
-					
-					Graphics2D g2 = (Graphics2D)share_image.getGraphics();
-					canvas.paint(g2);
-					try{
-
-						ImageIO.write(share_image,"png",new File("temp.png"));
-						System.out.println("saved image");
-
-					}catch(Exception ex){
-						System.out.println(ex.toString());
-					}
-
-			}
-
-
-		});
-
 
 		canvasPanel.add(canvas);
 		mainPanel.add(buttonsPanel);
