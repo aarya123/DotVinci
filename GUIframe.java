@@ -175,9 +175,12 @@ public class GUIframe implements Engine.EngineClient {
                     try {
                         // save image
                         BufferedImage bi = new BufferedImage(
-                                canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                                canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
                         		canvas.paint(bi.getGraphics());
-                        ImageIO.write(bi, ext, newFile);	//why doesn't it save the file???
+                        System.out.println("ext = " + ext);
+                        String format = ext.substring(1);
+                        System.out.println("format = " + format);
+                        ImageIO.write(bi, format , newFile);	//why doesn't it save the file???
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
