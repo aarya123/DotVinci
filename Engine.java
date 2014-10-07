@@ -140,7 +140,7 @@ public class Engine {
     public void drawOutputFast(final Graphics g) {
         if (hasImage()) {
             new Thread() {
-                @Override
+
                 public void run() {
                     for (int i = 0; i < FAST_OUTPUT_ITERATIONS; i++) {
                         drawDot(g);
@@ -176,7 +176,7 @@ public class Engine {
     }
 
     class UpdateImage extends Thread {
-        @Override
+
         public void run() {
 
             while (!isInterrupted()) {
