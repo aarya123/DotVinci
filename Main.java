@@ -6,7 +6,7 @@ public class Main {
      * invoked from the event-dispatching thread.
      */
 
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
 
     public static void main(String[] args) {
         // Schedule a job for the event-dispatching thread:

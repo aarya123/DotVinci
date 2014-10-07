@@ -26,18 +26,6 @@ public class GUIframe implements Engine.EngineClient {
     private boolean showImage;
     private BufferedImage dotImage;
 
-    private void LoadImage(BufferedImage image) {
-    	canvas.setSize(image.getWidth(), image.getHeight());
-        canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
-        engine.setImage(image);
-        dotImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-        startFilter.doClick();
-        pauseFilter.doClick();
-        showImage = true;
-        clearDotImage();
-        canvas.repaint();
-    }
-    
     public GUIframe(int width, int height) throws IOException {
 
         showImage = true;
@@ -115,7 +103,7 @@ public class GUIframe implements Engine.EngineClient {
         saveImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	
+
                 if (image == null) {
                     JOptionPane.showMessageDialog(window,
                             "No image to save, please load one first");
@@ -133,7 +121,7 @@ public class GUIframe implements Engine.EngineClient {
                  */
                 // open a JFilesChooser when the save button is clicked
                 JFileChooser chooser = new JFileChooser();
-                
+
                 chooser.addChoosableFileFilter(new SaveImageFilter("BMP"));
                 chooser.addChoosableFileFilter(new SaveImageFilter("JPG"));
                 chooser.addChoosableFileFilter(new SaveImageFilter("WBMP"));
@@ -141,46 +129,46 @@ public class GUIframe implements Engine.EngineClient {
                 chooser.addChoosableFileFilter(new SaveImageFilter("GIF"));
                 chooser.setFileFilter(new SaveImageFilter("JPEG"));
                 chooser.setAcceptAllFileFilterUsed(false);
-               
+
                 int ret = chooser.showDialog(null, "Save file");
-                
+
                 if (ret == JFileChooser.APPROVE_OPTION) {
 
                     // get selected file
                     File file = chooser.getSelectedFile();
-                    
-                    //add extension
-                    String ext="";
 
-                    String extension=chooser.getFileFilter().getDescription();
-                    if(extension.equals("JPG"))
-                        ext=".jpg";
-                    if(extension.equals("PNG"))
-                        ext=".png";
-                    if(extension.equals("GIF"))
-                        ext=".gif";
-                    if(extension.equals("WBMP"))
-                        ext=".wbmp";
-                    if(extension.equals("JPEG"))
-                        ext=".jpeg";
-                    if(extension.equals("BMP"))
-                        ext=".bmp";
-                    
+                    //add extension
+                    String ext = "";
+
+                    String extension = chooser.getFileFilter().getDescription();
+                    if (extension.equals("JPG"))
+                        ext = ".jpg";
+                    if (extension.equals("PNG"))
+                        ext = ".png";
+                    if (extension.equals("GIF"))
+                        ext = ".gif";
+                    if (extension.equals("WBMP"))
+                        ext = ".wbmp";
+                    if (extension.equals("JPEG"))
+                        ext = ".jpeg";
+                    if (extension.equals("BMP"))
+                        ext = ".bmp";
+
                     String fileName = file.toString() + ext;
-                    
+
                     //creating new file with modified file name
                     File newFile = new File(fileName);
-                    System.out.println(fileName+ "\t\t" + newFile.toString());
-                    
+                    System.out.println(fileName + "\t\t" + newFile.toString());
+
                     try {
                         // save image
                         BufferedImage bi = new BufferedImage(
                                 canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
-                        		canvas.paint(bi.getGraphics());
+                        canvas.paint(bi.getGraphics());
                         System.out.println("ext = " + ext);
                         String format = ext.substring(1);
                         System.out.println("format = " + format);
-                        ImageIO.write(bi, format , newFile);	//why doesn't it save the file???
+                        ImageIO.write(bi, format, newFile);    //why doesn't it save the file???
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -341,7 +329,7 @@ public class GUIframe implements Engine.EngineClient {
 
         // - add dot size slider
         JLabel dotSizeText = new JLabel("Pixel Size:");
-        final JSlider dotSize_slider = new JSlider(6, 15);
+        final JSlider dotSize_slider = new JSlider(1, 50);
         final JTextField dotSize_value = new JTextField(3);
         Dimension dim2 = new Dimension(40, 30);
         dotSize_slider.setValue(100);
@@ -354,6 +342,7 @@ public class GUIframe implements Engine.EngineClient {
             public void mouseReleased(MouseEvent arg0) {
                 dotSize_value.setText(String.valueOf(dotSize_slider
                         .getValue() + " px"));
+                engine.setPixelSize(dotSize_slider.getValue());
                 if (engine.isTimerRunning()) {
                     pauseFilter.doClick();
                     startFilter.doClick();
@@ -628,12 +617,24 @@ public class GUIframe implements Engine.EngineClient {
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setResizable(true);
         window.setVisible(true);
-        
+
         if (Main.DEBUG) {
             image = ImageIO.read(new FileInputStream("sample.jpg"));
             LoadImage(image);
             System.out.println(String.format("Size is width: %d height: %d", image.getWidth(), image.getHeight()));
         }
+    }
+
+    private void LoadImage(BufferedImage image) {
+        canvas.setSize(image.getWidth(), image.getHeight());
+        canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+        engine.setImage(image);
+        dotImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        startFilter.doClick();
+        pauseFilter.doClick();
+        showImage = true;
+        clearDotImage();
+        canvas.repaint();
     }
 
     public void onTimerTick() {

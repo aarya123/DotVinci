@@ -22,6 +22,7 @@ public class Engine {
     private long dotTimeDelta;
     private long lastExec;
     private Thread drawer;
+    private double pixelSize = 6.0;
 
 
     public Engine() {
@@ -95,6 +96,15 @@ public class Engine {
         return System.currentTimeMillis() - startTime;
     }
 
+    public double getPixelSize() {
+//        System.out.println("pixelSize = "+(pixelSize * 50 + 1));
+        return pixelSize;
+    }
+
+    public void setPixelSize(double pixelSize) {
+        this.pixelSize = pixelSize;
+    }
+
     private void drawDot(Graphics g) {
         int x = (int) (getImage().getWidth() * Math.random());
         int y = (int) (getImage().getHeight() * Math.random());
@@ -104,11 +114,11 @@ public class Engine {
         //TODO Shapes
         //TODO Radius
         g.setColor(pixel.getColor());
-        x = (int) (pixel.getX() - 5);
-        y = (int) (pixel.getY() - 5);
+        x = (int) (pixel.getX() - getPixelSize() / 2);
+        y = (int) (pixel.getY() - getPixelSize() / 2);
         x = x < 0 ? 0 : x;
         y = y < 0 ? 0 : y;
-        g.fillOval(x, y, 7, 7);
+        g.fillOval(x, y, (int) getPixelSize(), (int) getPixelSize());
     }
 
     public void updateOutput(Graphics g) {
