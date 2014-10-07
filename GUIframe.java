@@ -84,11 +84,11 @@ public class GUIframe implements Engine.EngineClient {
                     // Add a file filter for each one
                     for (String suffice : suffices) {
                         FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                                suffice + " files", suffice);
+                                suffice.toUpperCase(), suffice);
                         chooser.addChoosableFileFilter(filter);
                     }
                 }
-                chooser.setFileFilter(new ImageFilter());
+                chooser.setFileFilter(new AllImagesFilter());
                 chooser.setAcceptAllFileFilterUsed(false);
                 int ret = chooser.showDialog(null, "Open file");
 
@@ -111,6 +111,7 @@ public class GUIframe implements Engine.EngineClient {
             }
         });
 
+        //Save action listener
         saveImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -132,21 +133,56 @@ public class GUIframe implements Engine.EngineClient {
                  */
                 // open a JFilesChooser when the save button is clicked
                 JFileChooser chooser = new JFileChooser();
-     
-                int ret = chooser.showSaveDialog(null);
-                File file = chooser.getSelectedFile();
-                String saveName = chooser.getSelectedFile().toString();
-                System.out.println(saveName + "\n\n");
                 
-                try {
-                    // save image
-                    BufferedImage bi = new BufferedImage(
-                            canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
-                    		canvas.paint(bi.getGraphics());
-                    ImageIO.write(bi, "png", file);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                chooser.addChoosableFileFilter(new SaveImageFilter("BMP"));
+                chooser.addChoosableFileFilter(new SaveImageFilter("JPG"));
+                chooser.addChoosableFileFilter(new SaveImageFilter("WBMP"));
+                chooser.addChoosableFileFilter(new SaveImageFilter("PNG"));
+                chooser.addChoosableFileFilter(new SaveImageFilter("GIF"));
+                chooser.setFileFilter(new SaveImageFilter("JPEG"));
+                chooser.setAcceptAllFileFilterUsed(false);
+               
+                int ret = chooser.showDialog(null, "Save file");
+                
+                if (ret == JFileChooser.APPROVE_OPTION) {
+
+                    // get selected file
+                    File file = chooser.getSelectedFile();
+                    
+                    //add extension
+                    String ext="";
+
+                    String extension=chooser.getFileFilter().getDescription();
+                    if(extension.equals("JPG"))
+                        ext=".jpg";
+                    if(extension.equals("PNG"))
+                        ext=".png";
+                    if(extension.equals("GIF"))
+                        ext=".gif";
+                    if(extension.equals("WBMP"))
+                        ext=".wbmp";
+                    if(extension.equals("JPEG"))
+                        ext=".jpeg";
+                    if(extension.equals("BMP"))
+                        ext=".bmp";
+                    
+                    String fileName = file.toString() + ext;
+                    
+                    //creating new file with modified file name
+                    File newFile = new File(fileName);
+                    System.out.println(fileName+ "\t\t" + newFile.toString());
+                    
+                    try {
+                        // save image
+                        BufferedImage bi = new BufferedImage(
+                                canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                        		canvas.paint(bi.getGraphics());
+                        ImageIO.write(bi, ext, newFile);	//why doesn't it save the file???
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
+
             }
         });
 

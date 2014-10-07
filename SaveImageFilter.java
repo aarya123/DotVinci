@@ -2,9 +2,13 @@ import javax.swing.filechooser.FileFilter;
 import java.io.File;
 
 /* ImageFilter.java is used by FileChooserDemo2.java. */
-public class ImageFilter extends FileFilter {
+public class SaveImageFilter extends FileFilter {
 
+	String name; 
     //Accept all directories and all gif, jpg, tiff, or png files.
+	public SaveImageFilter(String name){
+		this.name = name;
+	}
 
     public static String getExtension(File f) {
         String ext = null;
@@ -37,6 +41,6 @@ public class ImageFilter extends FileFilter {
 
     //The description of this filter
     public String getDescription() {
-        return "All Images";
+        return name;
     }
 }
