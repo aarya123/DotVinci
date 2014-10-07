@@ -416,6 +416,7 @@ public class GUIframe implements Engine.EngineClient {
             @Override
             public void stateChanged(ChangeEvent e) {
                 if (circleShape.isSelected()) {
+                    engine.setShape(Engine.Shape.Circle);
                     squareShape.setSelected(false);
                     triangleShape.setSelected(false);
                     //engine.setFilter(Engine.Filter.NORMAL);
@@ -431,6 +432,7 @@ public class GUIframe implements Engine.EngineClient {
             @Override
             public void stateChanged(ChangeEvent e) {
                 if (squareShape.isSelected()) {
+                    engine.setShape(Engine.Shape.Square);
                     circleShape.setSelected(false);
                     triangleShape.setSelected(false);
                     //engine.setFilter(Engine.Filter.SEPIA);
@@ -446,6 +448,7 @@ public class GUIframe implements Engine.EngineClient {
             @Override
             public void stateChanged(ChangeEvent e) {
                 if (triangleShape.isSelected()) {
+                    engine.setShape(Engine.Shape.Triangle);
                     squareShape.setSelected(false);
                     circleShape.setSelected(false);
                     //engine.setFilter(Engine.Filter.NEGATIVE);

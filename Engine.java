@@ -23,7 +23,7 @@ public class Engine {
     private long lastExec;
     private Thread drawer;
     private double pixelSize = 6.0;
-
+    private Shape shape = Shape.Circle;
 
     public Engine() {
         startTime = -1;
@@ -105,6 +105,10 @@ public class Engine {
         this.pixelSize = pixelSize;
     }
 
+    public void setShape(Shape shape) {
+        this.shape = shape;
+    }
+
     private void drawDot(Graphics g) {
         int x = (int) (getImage().getWidth() * Math.random());
         int y = (int) (getImage().getHeight() * Math.random());
@@ -112,13 +116,18 @@ public class Engine {
         Pixel pixel = new Pixel(x, y, color.getRed(), color.getGreen(), color.getBlue());
         pixel = getFilter().filterPixel(pixel);
         //TODO Shapes
-        //TODO Radius
         g.setColor(pixel.getColor());
         x = (int) (pixel.getX() - getPixelSize() / 2);
         y = (int) (pixel.getY() - getPixelSize() / 2);
         x = x < 0 ? 0 : x;
         y = y < 0 ? 0 : y;
-        g.fillOval(x, y, (int) getPixelSize(), (int) getPixelSize());
+        if (shape == Shape.Triangle) {
+
+        } else if (shape == Shape.Square) {
+            g.fillRect(x, y, (int) getPixelSize(), (int) getPixelSize());
+        } else {
+            g.fillOval(x, y, (int) getPixelSize(), (int) getPixelSize());
+        }
     }
 
     public void updateOutput(Graphics g) {
@@ -147,6 +156,10 @@ public class Engine {
         if (hasImage()) {
             g.drawImage(image, 0, 0, null);
         }
+    }
+
+    enum Shape {
+        Circle, Square, Triangle
     }
 
     public enum Filter {
