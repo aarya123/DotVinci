@@ -180,7 +180,7 @@ public class GUIframe implements Engine.EngineClient {
                         System.out.println("ext = " + ext);
                         String format = ext.substring(1);
                         System.out.println("format = " + format);
-                        ImageIO.write(bi, format , newFile);	//why doesn't it save the file???
+                        ImageIO.write(bi, format , newFile);
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -205,7 +205,7 @@ public class GUIframe implements Engine.EngineClient {
             public void actionPerformed(ActionEvent arg0) {
                 if (!noFilter.isSelected()) {
                     noFilter.setSelected(true);
-                }
+                } 
             }
         });
 
