@@ -166,7 +166,18 @@ public class GUIframe implements Engine.EngineClient {
                     if(extension.equals("BMP"))
                         ext=".bmp";
                     
-                    String fileName = file.toString() + ext;
+                    
+                    String fileName;
+                    
+                    //fixes   imageFile.jpeg.jpeg  bug
+                    if(! (file.toString().contains("."))) {
+                    	fileName = file.toString() + ext;
+                    } 
+                    
+                    else {
+                    	String parts[] = file.toString().split("\\.");
+                    	fileName = parts[0] + ext;
+                    }
                     
                     //creating new file with modified file name
                     File newFile = new File(fileName);
