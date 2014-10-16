@@ -68,6 +68,7 @@ public class GUIframe implements Engine.EngineClient {
                  
                     "Email to share to( Works best with gmail to gmail):"
                    );
+		   /*
 		   System.out.println(to_email);
 
                      String from_email = (String)JOptionPane.showInputDialog(
@@ -80,10 +81,19 @@ public class GUIframe implements Engine.EngineClient {
                     
                     "Gmail Password:"
                );
-
-
-                    GmailShare email = new GmailShare(to_email, from_email, from_pass, "Check out my drawing on DotVinci!", ".temp.png");
+	       */
+  JLabel from_email_label = new JLabel("Email ID:");
+        JTextField from_email= new JTextField();
+	        JLabel from_pass_label  = new JLabel("Password");
+		        JTextField from_pass = new JPasswordField();
+			        Object[] ob = {from_email_label, from_email, from_pass_label,from_pass };
+				        int result = JOptionPane.showConfirmDialog(null, ob, "Gmail Sign In", JOptionPane.OK_CANCEL_OPTION);
+					 
+  if (result == JOptionPane.OK_OPTION) {
+			              //Here is some validation code
+                    GmailShare email = new GmailShare(to_email, from_email.getText(), from_pass.getText(), "Check out my drawing on DotVinci!", ".temp.png");
                     email.share();
+		    }
                 }
                 catch(Exception e1)
                 {
