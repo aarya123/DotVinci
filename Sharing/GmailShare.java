@@ -1,5 +1,4 @@
 package Sharing;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -46,7 +45,6 @@ public class GmailShare implements ShareInterface{
 		// needs gmail pass for from email
 		email.setAuthenticator(new DefaultAuthenticator(from, fromPassword));
 		email.setSSLOnConnect(true);
-	
 		if(imagePath!=null && !imagePath.isEmpty()){
 		 EmailAttachment attachment = new EmailAttachment();
 		  attachment.setPath(imagePath);
@@ -55,7 +53,7 @@ public class GmailShare implements ShareInterface{
 		  attachment.setName(ATTACHMENT_IMG_TITLE);
 		  try {
 			email.attach(attachment);
-		  } catch (EmailException e1) {
+		  } catch (Exception e1) {
 			
 			e1.printStackTrace();
 		  }
