@@ -118,8 +118,11 @@ public class Engine {
     }
 
     private void drawDot(Graphics g) {
-        int x = (int) (getImage().getWidth() * Math.random());
-        int y = (int) (getImage().getHeight() * Math.random());
+    	//bug
+    	int y = (int) (getImage().getWidth() * Math.random());
+        
+    	//bug
+    	int x = (int) (getImage().getHeight() * Math.random());
         Color color = new Color(getImage().getRGB(x, y));
         Pixel pixel = new Pixel(x, y, color.getRed(), color.getGreen(), color.getBlue());
         pixel = getFilter().filterPixel(pixel);
