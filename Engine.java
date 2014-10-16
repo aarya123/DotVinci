@@ -131,7 +131,6 @@ public class Engine {
     public void updateOutput(Graphics g) {
         if (hasImage()) {
             drawDot(g);
-            //			g.drawImage(getImage(), 0, 0, canvas);
         }
     }
 
