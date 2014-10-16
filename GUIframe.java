@@ -138,24 +138,35 @@ public class GUIframe implements Engine.EngineClient {
                     File file = chooser.getSelectedFile();
 
                     //add extension
-                    String ext = "";
+                    String ext="";
 
-                    String extension = chooser.getFileFilter().getDescription();
-                    if (extension.equals("JPG"))
-                        ext = ".jpg";
-                    if (extension.equals("PNG"))
-                        ext = ".png";
-                    if (extension.equals("GIF"))
-                        ext = ".gif";
-                    if (extension.equals("WBMP"))
-                        ext = ".wbmp";
-                    if (extension.equals("JPEG"))
-                        ext = ".jpeg";
-                    if (extension.equals("BMP"))
-                        ext = ".bmp";
-
-                    String fileName = file.toString() + ext;
-
+                    String extension=chooser.getFileFilter().getDescription();
+                    if(extension.equals("JPG"))
+                        ext=".jpg";
+                    if(extension.equals("PNG"))
+                        ext=".png";
+                    if(extension.equals("GIF"))
+                        ext=".gif";
+                    if(extension.equals("WBMP"))
+                        ext=".wbmp";
+                    if(extension.equals("JPEG"))
+                        ext=".jpeg";
+                    if(extension.equals("BMP"))
+                        ext=".bmp";
+                    
+                    
+                    String fileName;
+                    
+                    //fixes   imageFile.jpeg.jpeg  bug
+                    if(! (file.toString().contains("."))) {
+                    	fileName = file.toString() + ext;
+                    } 
+                    
+                    else {
+                    	String parts[] = file.toString().split("\\.");
+                    	fileName = parts[0] + ext;
+                    }
+                    
                     //creating new file with modified file name
                     File newFile = new File(fileName);
                     System.out.println(fileName + "\t\t" + newFile.toString());
@@ -168,7 +179,7 @@ public class GUIframe implements Engine.EngineClient {
                         System.out.println("ext = " + ext);
                         String format = ext.substring(1);
                         System.out.println("format = " + format);
-                        ImageIO.write(bi, format, newFile);    //why doesn't it save the file???
+                        ImageIO.write(bi, format , newFile);
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -193,7 +204,7 @@ public class GUIframe implements Engine.EngineClient {
             public void actionPerformed(ActionEvent arg0) {
                 if (!noFilter.isSelected()) {
                     noFilter.setSelected(true);
-                }
+                } 
             }
         });
 
