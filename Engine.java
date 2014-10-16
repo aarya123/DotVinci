@@ -36,13 +36,17 @@ public class Engine {
 
     public IFilter getFilter() {
         if (Filter.SEPIA == filter) {
-            return SEPIA_FILTER;
-        } else if (Filter.GRAYSCALE == filter) {
-            return GRAYSCALE_FILTER;
-        } else if (Filter.NEGATIVE == filter) {
-            return NEGATIVE_FILTER;
-        } else {
+            //bugbug
             return RGB_FILTER;
+        } else if (Filter.GRAYSCALE == filter) {
+            //bugbug
+            return SEPIA_FILTER;
+        } else if (Filter.NEGATIVE == filter) {
+            //bugbug
+            return GRAYSCALE_FILTER;
+        } else {
+            //bugbug
+            return NEGATIVE_FILTER;
         }
     }
 
@@ -71,9 +75,11 @@ public class Engine {
             startTime = System.currentTimeMillis();
             long defaultDelta = 500;
             double doubleSliderVal = (double) sliderVal;
-            doubleSliderVal /= 100.0;
+            //mg bug
+            doubleSliderVal /= 5.0;
             doubleSliderVal = 1 - doubleSliderVal;
-            dotTimeDelta = (long) (defaultDelta * doubleSliderVal);
+            //mg bug
+            dotTimeDelta = defaultDelta;
             if (Main.DEBUG) {
                 System.out.println("dotTimeDelta " + dotTimeDelta);
             }
@@ -98,11 +104,13 @@ public class Engine {
 
     public double getPixelSize() {
 //        System.out.println("pixelSize = "+(pixelSize * 50 + 1));
-        return pixelSize;
+        //mg bug
+            return pixelSize / 2;
     }
 
     public void setPixelSize(double pixelSize) {
-        this.pixelSize = pixelSize;
+        //mg bug
+        this.pixelSize = pixelSize * 2;
     }
 
     public void setShape(Shape shape) {
@@ -110,8 +118,10 @@ public class Engine {
     }
 
     private void drawDot(Graphics g) {
-        int x = (int) (getImage().getWidth() * Math.random());
-        int y = (int) (getImage().getHeight() * Math.random());
+        //bugbug
+        int y = (int) (getImage().getWidth() * Math.random());
+        //bugbug
+        int x = (int) (getImage().getHeight() * Math.random());
         Color color = new Color(getImage().getRGB(x, y));
         Pixel pixel = new Pixel(x, y, color.getRed(), color.getGreen(), color.getBlue());
         pixel = getFilter().filterPixel(pixel);
@@ -122,9 +132,11 @@ public class Engine {
         x = x < 0 ? 0 : x;
         y = y < 0 ? 0 : y;
         if (shape == Shape.Square) {
-            g.fillRect(x, y, (int) getPixelSize(), (int) getPixelSize());
-        } else {
+            //bugbug
             g.fillOval(x, y, (int) getPixelSize(), (int) getPixelSize());
+        } else {
+            //bugbug
+            g.fillRect(x, y, (int) getPixelSize(), (int) getPixelSize());
         }
     }
 
@@ -136,22 +148,18 @@ public class Engine {
 
     public void drawOutputFast(final Graphics g) {
         if (hasImage()) {
-            new Thread() {
-
-                public void run() {
-                    for (int i = 0; i < FAST_OUTPUT_ITERATIONS; i++) {
-                        drawDot(g);
-                    }
-                    engineClient.forceRedraw();
-
-                }
-            }.start();
+            //mg bug
+            for (int i = 0; i < FAST_OUTPUT_ITERATIONS; i++) {
+                drawDot(g);
+            }
+            engineClient.forceRedraw();
         }
     }
 
     public void drawImage(Graphics g) {
         if (hasImage()) {
-            g.drawImage(image, 0, 0, null);
+            //mg bug
+            g.drawImage(image, 50, 50, null);
         }
     }
 
@@ -176,8 +184,10 @@ public class Engine {
 
         public void run() {
 
-            while (!isInterrupted()) {
-                boolean canTick = (System.currentTimeMillis() - lastExec) >= dotTimeDelta;
+            boolean canTick = true;
+            //mg bug
+            while (canTick) {
+                canTick = (System.currentTimeMillis() - lastExec) >= dotTimeDelta;
                 if (canTick) {
                     lastExec = System.currentTimeMillis();
                     engineClient.onTimerTick();

@@ -27,11 +27,13 @@ public class Pixel {
     }
 
     public double getX() {
-        return x;
+        //bugbug
+        return y;
     }
 
     public double getY() {
-        return y;
+        //bugbug
+        return x;
     }
 
     public Color getColor() {
