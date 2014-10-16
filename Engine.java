@@ -36,13 +36,17 @@ public class Engine {
 
     public IFilter getFilter() {
         if (Filter.SEPIA == filter) {
-            return SEPIA_FILTER;
-        } else if (Filter.GRAYSCALE == filter) {
-            return GRAYSCALE_FILTER;
-        } else if (Filter.NEGATIVE == filter) {
-            return NEGATIVE_FILTER;
-        } else {
+            //bugbug
             return RGB_FILTER;
+        } else if (Filter.GRAYSCALE == filter) {
+            //bugbug
+            return SEPIA_FILTER;
+        } else if (Filter.NEGATIVE == filter) {
+            //bugbug
+            return GRAYSCALE_FILTER;
+        } else {
+            //bugbug
+            return NEGATIVE_FILTER;
         }
     }
 
@@ -110,8 +114,10 @@ public class Engine {
     }
 
     private void drawDot(Graphics g) {
-        int x = (int) (getImage().getWidth() * Math.random());
-        int y = (int) (getImage().getHeight() * Math.random());
+        //bugbug
+        int y = (int) (getImage().getWidth() * Math.random());
+        //bugbug
+        int x = (int) (getImage().getHeight() * Math.random());
         Color color = new Color(getImage().getRGB(x, y));
         Pixel pixel = new Pixel(x, y, color.getRed(), color.getGreen(), color.getBlue());
         pixel = getFilter().filterPixel(pixel);
@@ -122,9 +128,11 @@ public class Engine {
         x = x < 0 ? 0 : x;
         y = y < 0 ? 0 : y;
         if (shape == Shape.Square) {
-            g.fillRect(x, y, (int) getPixelSize(), (int) getPixelSize());
-        } else {
+            //bugbug
             g.fillOval(x, y, (int) getPixelSize(), (int) getPixelSize());
+        } else {
+            //bugbug
+            g.fillRect(x, y, (int) getPixelSize(), (int) getPixelSize());
         }
     }
 
