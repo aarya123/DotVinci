@@ -4,6 +4,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import Sharing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -63,6 +64,46 @@ public class GUIframe implements Engine.EngineClient {
         JButton immediateFilter = new JButton("Quick Draw");
         JButton saveImage = new JButton("Save Image");
         JButton shareImage = new JButton("Share Image");
+
+
+        shareImage.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                BufferedImage bi = new BufferedImage(
+                                canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+                                canvas.paint(bi.getGraphics());
+                                try{
+                     ImageIO.write(bi,"png",new File(".temp.png"));
+
+ String to_email = (String)JOptionPane.showInputDialog(
+                 
+                    "Email to share to( Works best with gmail to gmail):"
+                   );
+		   System.out.println(to_email);
+
+                     String from_email = (String)JOptionPane.showInputDialog(
+                 
+                    "Gmail Full Email (Ex: bill@gmail.com ):"
+                   
+                 );
+		 System.out.println(from_email);
+                    String from_pass = (String)JOptionPane.showInputDialog(
+                    
+                    "Gmail Password:"
+               );
+
+
+                    GmailShare email = new GmailShare(to_email, from_email, from_pass, "Check out my drawing on DotVinci!", ".temp.png");
+                    email.share();
+                }
+                catch(Exception e1)
+                {
+                    System.out.println(e.toString());
+                }
+            }
+        });
+
 
         openImage.addActionListener(new ActionListener() {
             @Override
