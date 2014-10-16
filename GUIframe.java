@@ -340,14 +340,14 @@ public class GUIframe implements Engine.EngineClient {
 
         // - add dot size slider
         JLabel dotSizeText = new JLabel("Pixel Size:");
-        final JSlider dotSize_slider = new JSlider(1, 50);
+        final JSlider dotSize_slider = new JSlider(7, 50);
         final JTextField dotSize_value = new JTextField(3);
         Dimension dim2 = new Dimension(40, 30);
         dotSize_slider.setValue(100);
         dotSize_slider.setValue(6);
         dotSize_value.setSize(20, 20);
         dotSize_value.setMaximumSize(dim2);
-        dotSize_value.setText("6 px");
+        dotSize_value.setText("7 px");
         dotSize_slider.addMouseListener(new MouseListener() {
 
             public void mouseReleased(MouseEvent arg0) {
