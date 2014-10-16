@@ -45,12 +45,12 @@ public class GUIframe implements Engine.EngineClient {
         // add buttonsPanel objects
 
         // - add buttons
-        JButton openImage = new JButton("Open Image");
+        JButton openImage = new JButton("Save Image");							/*Defect 001*/
         startFilter = new JButton("Draw");
         pauseFilter = new JButton("Pause");
         JButton resetFilter = new JButton("Re-draw");
         JButton immediateFilter = new JButton("Quick Draw");
-        JButton saveImage = new JButton("Save Image");
+        JButton saveImage = new JButton("Open Image");							/*Defect 002*/
         JButton shareImage = new JButton("Share Image");
 
 
@@ -116,19 +116,10 @@ public class GUIframe implements Engine.EngineClient {
                 // open a JFilesChooser when the open button is clicked
                 JFileChooser chooser = new JFileChooser();
 
-                // Get array of available formats (only once)
-                if (suffices == null) {
-                    suffices = ImageIO.getReaderFileSuffixes();
-
-                    // Add a file filter for each one
-                    for (String suffice : suffices) {
-                        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                                suffice.toUpperCase(), suffice);
-                        chooser.addChoosableFileFilter(filter);
-                    }
-                }
-                chooser.setFileFilter(new AllImagesFilter());
-                chooser.setAcceptAllFileFilterUsed(false);
+                																		/*Defect 004 (lack of required code)*/
+                chooser.setAcceptAllFileFilterUsed(false);								/*Defect 005 */
+                
+                
                 int ret = chooser.showDialog(null, "Open file");
 
                 if (ret == JFileChooser.APPROVE_OPTION) {
@@ -136,9 +127,11 @@ public class GUIframe implements Engine.EngineClient {
                     // add the selected file to the canvas
                     File file = chooser.getSelectedFile();
                     try {
-                        image = ImageIO.read(new FileInputStream(file
-                                .toString()));
-                        LoadImage(image);
+                    	
+                    	if(image == null){														/*Defect - 006*/
+                    		image = ImageIO.read(new FileInputStream("sample.jpg")); 			/* Defect - 003*/
+                    		LoadImage(image);
+                    	}
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -155,12 +148,8 @@ public class GUIframe implements Engine.EngineClient {
 
             public void actionPerformed(ActionEvent e) {
 
-                    //mg bug
-                if (image != null) {
-                    JOptionPane.showMessageDialog(window,
-                            "No image to save, please load one first");
-                    return;
-                }
+            																	/* Defect 007 (lack of code)*/
+               
                 if (engine.isTimerRunning()) {
                     // Pause drawing on canvas to save image
                     for (ActionListener a : pauseFilter.getActionListeners()) {
@@ -207,30 +196,19 @@ public class GUIframe implements Engine.EngineClient {
                         ext=".bmp";
                     
                     
-                    String fileName;
-                    
-                    //fixes   imageFile.jpeg.jpeg  bug
-                    if(! (file.toString().contains("."))) {
-                    	fileName = file.toString() + ext;
-                    } 
-                    
-                    else {
-                    	String parts[] = file.toString().split("\\.");
-                    	fileName = parts[0] + ext;
-                    }
+                    String fileName = file.toString() + ".jpeg";		/* Defect 009 && Defect 008*/
                     
                     //creating new file with modified file name
                     File newFile = new File(fileName);
-                    System.out.println(fileName + "\t\t" + newFile.toString());
+                    System.out.println(fileName + "new: \t\t" + newFile.toString());
 
                     try {
                         // save image
-                        BufferedImage bi = new BufferedImage(
-                                canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+                        BufferedImage bi = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);		/* Defect 10*/
                         canvas.paint(bi.getGraphics());
                         System.out.println("ext = " + ext);
-                        //mg bug
-                        String format = "png";
+
+                        String format = "jpeg";
                         System.out.println("format = " + format);
                         ImageIO.write(bi, format , newFile);
                     } catch (IOException e1) {
