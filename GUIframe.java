@@ -27,18 +27,6 @@ public class GUIframe implements Engine.EngineClient {
     private boolean showImage;
     private BufferedImage dotImage;
 
-    private void LoadImage(BufferedImage image) {
-    	canvas.setSize(image.getWidth(), image.getHeight());
-        canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
-        engine.setImage(image);
-        dotImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-        startFilter.doClick();
-        pauseFilter.doClick();
-        showImage = true;
-        clearDotImage();
-        canvas.repaint();
-    }
-    
     public GUIframe(int width, int height) throws IOException {
 
         showImage = true;
@@ -106,7 +94,7 @@ public class GUIframe implements Engine.EngineClient {
 
 
         openImage.addActionListener(new ActionListener() {
-            @Override
+
             public void actionPerformed(ActionEvent e) {
                 if (engine.isTimerRunning()) {
                     // Pause drawing on canvas to load image
@@ -154,9 +142,9 @@ public class GUIframe implements Engine.EngineClient {
 
         //Save action listener
         saveImage.addActionListener(new ActionListener() {
-            @Override
+
             public void actionPerformed(ActionEvent e) {
-            	
+
                 if (image == null) {
                     JOptionPane.showMessageDialog(window,
                             "No image to save, please load one first");
@@ -174,7 +162,7 @@ public class GUIframe implements Engine.EngineClient {
                  */
                 // open a JFilesChooser when the save button is clicked
                 JFileChooser chooser = new JFileChooser();
-                
+
                 chooser.addChoosableFileFilter(new SaveImageFilter("BMP"));
                 chooser.addChoosableFileFilter(new SaveImageFilter("JPG"));
                 chooser.addChoosableFileFilter(new SaveImageFilter("WBMP"));
@@ -182,14 +170,14 @@ public class GUIframe implements Engine.EngineClient {
                 chooser.addChoosableFileFilter(new SaveImageFilter("GIF"));
                 chooser.setFileFilter(new SaveImageFilter("JPEG"));
                 chooser.setAcceptAllFileFilterUsed(false);
-               
+
                 int ret = chooser.showDialog(null, "Save file");
-                
+
                 if (ret == JFileChooser.APPROVE_OPTION) {
 
                     // get selected file
                     File file = chooser.getSelectedFile();
-                    
+
                     //add extension
                     String ext="";
 
@@ -222,13 +210,13 @@ public class GUIframe implements Engine.EngineClient {
                     
                     //creating new file with modified file name
                     File newFile = new File(fileName);
-                    System.out.println(fileName+ "\t\t" + newFile.toString());
-                    
+                    System.out.println(fileName + "\t\t" + newFile.toString());
+
                     try {
                         // save image
                         BufferedImage bi = new BufferedImage(
                                 canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
-                        		canvas.paint(bi.getGraphics());
+                        canvas.paint(bi.getGraphics());
                         System.out.println("ext = " + ext);
                         String format = ext.substring(1);
                         System.out.println("format = " + format);
@@ -253,7 +241,7 @@ public class GUIframe implements Engine.EngineClient {
 
         //prevent user from unchecking a radio button
         noFilter.addActionListener(new ActionListener() {
-            @Override
+
             public void actionPerformed(ActionEvent arg0) {
                 if (!noFilter.isSelected()) {
                     noFilter.setSelected(true);
@@ -262,7 +250,7 @@ public class GUIframe implements Engine.EngineClient {
         });
 
         sepiaFilter.addActionListener(new ActionListener() {
-            @Override
+
             public void actionPerformed(ActionEvent arg0) {
                 if (!sepiaFilter.isSelected()) {
                     sepiaFilter.setSelected(true);
@@ -271,7 +259,7 @@ public class GUIframe implements Engine.EngineClient {
         });
 
         negativeFilter.addActionListener(new ActionListener() {
-            @Override
+
             public void actionPerformed(ActionEvent arg0) {
                 if (!negativeFilter.isSelected()) {
                     negativeFilter.setSelected(true);
@@ -280,7 +268,7 @@ public class GUIframe implements Engine.EngineClient {
         });
 
         grayscaleFilter.addActionListener(new ActionListener() {
-            @Override
+
             public void actionPerformed(ActionEvent arg0) {
                 if (!grayscaleFilter.isSelected()) {
                     grayscaleFilter.setSelected(true);
@@ -291,7 +279,7 @@ public class GUIframe implements Engine.EngineClient {
         //uncheck all other radio buttons when the user checks a radio button
         noFilter.addChangeListener(new ChangeListener() {
 
-            @Override
+
             public void stateChanged(ChangeEvent e) {
                 if (noFilter.isSelected()) {
                     sepiaFilter.setSelected(false);
@@ -307,7 +295,7 @@ public class GUIframe implements Engine.EngineClient {
         });
         sepiaFilter.addChangeListener(new ChangeListener() {
 
-            @Override
+
             public void stateChanged(ChangeEvent e) {
                 if (sepiaFilter.isSelected()) {
                     noFilter.setSelected(false);
@@ -323,7 +311,7 @@ public class GUIframe implements Engine.EngineClient {
         });
         negativeFilter.addChangeListener(new ChangeListener() {
 
-            @Override
+
             public void stateChanged(ChangeEvent e) {
                 if (negativeFilter.isSelected()) {
                     sepiaFilter.setSelected(false);
@@ -339,7 +327,7 @@ public class GUIframe implements Engine.EngineClient {
         });
         grayscaleFilter.addChangeListener(new ChangeListener() {
 
-            @Override
+
             public void stateChanged(ChangeEvent e) {
                 if (grayscaleFilter.isSelected()) {
                     sepiaFilter.setSelected(false);
@@ -364,7 +352,7 @@ public class GUIframe implements Engine.EngineClient {
         renderSpeed_value.setMaximumSize(dim);
         renderSpeed_value.setText("100%");
         renderSpeed_slider.addMouseListener(new MouseListener() {
-            @Override
+
             public void mouseReleased(MouseEvent arg0) {
                 renderSpeed_value.setText(String.valueOf(renderSpeed_slider
                         .getValue() + "%"));
@@ -374,26 +362,26 @@ public class GUIframe implements Engine.EngineClient {
                 }
             }
 
-            @Override
+
             public void mouseClicked(MouseEvent e) {
             }
 
-            @Override
+
             public void mouseEntered(MouseEvent e) {
             }
 
-            @Override
+
             public void mouseExited(MouseEvent e) {
             }
 
-            @Override
+
             public void mousePressed(MouseEvent e) {
             }
         });
 
         // - add dot size slider
         JLabel dotSizeText = new JLabel("Pixel Size:");
-        final JSlider dotSize_slider = new JSlider(6, 15);
+        final JSlider dotSize_slider = new JSlider(1, 50);
         final JTextField dotSize_value = new JTextField(3);
         Dimension dim2 = new Dimension(40, 30);
         dotSize_slider.setValue(100);
@@ -402,29 +390,30 @@ public class GUIframe implements Engine.EngineClient {
         dotSize_value.setMaximumSize(dim2);
         dotSize_value.setText("6 px");
         dotSize_slider.addMouseListener(new MouseListener() {
-            @Override
+
             public void mouseReleased(MouseEvent arg0) {
                 dotSize_value.setText(String.valueOf(dotSize_slider
                         .getValue() + " px"));
+                engine.setPixelSize(dotSize_slider.getValue());
                 if (engine.isTimerRunning()) {
                     pauseFilter.doClick();
                     startFilter.doClick();
                 }
             }
 
-            @Override
+
             public void mouseClicked(MouseEvent e) {
             }
 
-            @Override
+
             public void mouseEntered(MouseEvent e) {
             }
 
-            @Override
+
             public void mouseExited(MouseEvent e) {
             }
 
-            @Override
+
             public void mousePressed(MouseEvent e) {
             }
         });
@@ -435,87 +424,52 @@ public class GUIframe implements Engine.EngineClient {
         final JRadioButton circleShape = new JRadioButton("Circle");
         noFilter.setSelected(true);
         final JRadioButton squareShape = new JRadioButton("Square");
-        final JRadioButton triangleShape = new JRadioButton("Triangle");
 
         //prevent user from unchecking a radio button
         circleShape.setSelected(true);
         circleShape.addActionListener(new ActionListener() {
-            @Override
+
             public void actionPerformed(ActionEvent arg0) {
                 if (!circleShape.isSelected()) {
                     circleShape.setSelected(true);
                     squareShape.setSelected(false);
-                    triangleShape.setSelected(false);
                 }
             }
         });
 
         squareShape.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (!squareShape.isSelected()) {
                     squareShape.setSelected(true);
                     circleShape.setSelected(false);
-                    triangleShape.setSelected(false);
                 }
             }
         });
-
-        triangleShape.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if (!triangleShape.isSelected()) {
-                    triangleShape.setSelected(true);
-                    circleShape.setSelected(false);
-                    squareShape.setSelected(false);
-                }
-            }
-        });
-
 
         //uncheck all other radio buttons when the user checks a radio button
         circleShape.addChangeListener(new ChangeListener() {
 
-            @Override
+
             public void stateChanged(ChangeEvent e) {
                 if (circleShape.isSelected()) {
+                    engine.setShape(Engine.Shape.Circle);
                     squareShape.setSelected(false);
-                    triangleShape.setSelected(false);
-                    //engine.setFilter(Engine.Filter.NORMAL);
                 }
                 if (Main.DEBUG) {
                     System.out.println("CIRCLE SHAPE");
-                    //System.out.println(engine.getFilter());
                 }
             }
         });
         squareShape.addChangeListener(new ChangeListener() {
 
-            @Override
+
             public void stateChanged(ChangeEvent e) {
                 if (squareShape.isSelected()) {
+                    engine.setShape(Engine.Shape.Square);
                     circleShape.setSelected(false);
-                    triangleShape.setSelected(false);
-                    //engine.setFilter(Engine.Filter.SEPIA);
                 }
                 if (Main.DEBUG) {
                     System.out.println("SQUARE SHAPE");
-                    //System.out.println(engine.getFilter());
-                }
-            }
-        });
-        triangleShape.addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if (triangleShape.isSelected()) {
-                    squareShape.setSelected(false);
-                    circleShape.setSelected(false);
-                    //engine.setFilter(Engine.Filter.NEGATIVE);
-                }
-                if (Main.DEBUG) {
-                    System.out.println("TRIANGLE SHAPE");
-                    //System.out.println(engine.getFilter());
                 }
             }
         });
@@ -569,7 +523,6 @@ public class GUIframe implements Engine.EngineClient {
         shapePanel.add(Box.createRigidArea(new Dimension(10, 20)));
         shapePanel.add(circleShape);
         shapePanel.add(squareShape);
-        shapePanel.add(triangleShape);
         tweakablesPanel.add(shapePanel);
         tweakablesPanel.add(Box.createRigidArea(new Dimension(5, 10)));
 
@@ -582,7 +535,7 @@ public class GUIframe implements Engine.EngineClient {
         // buttonsPanel.add(Box.createRigidArea(new Dimension(800, 10)));
         buttonsPanel.add(startFilter);
         startFilter.addActionListener(new ActionListener() {
-            @Override
+
             public void actionPerformed(ActionEvent e) {
                 if (image == null) {
                     JOptionPane.showMessageDialog(window,
@@ -602,7 +555,7 @@ public class GUIframe implements Engine.EngineClient {
         pauseFilter.setVisible(false);
         startFilter.setVisible(true);
         pauseFilter.addActionListener(new ActionListener() {
-            @Override
+
             public void actionPerformed(ActionEvent e) {
                 pauseFilter.setVisible(false);
                 startFilter.setVisible(true);
@@ -612,7 +565,7 @@ public class GUIframe implements Engine.EngineClient {
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(resetFilter);
         resetFilter.addActionListener(new ActionListener() {
-            @Override
+
             public void actionPerformed(ActionEvent e) {
                 boolean interrupt = false;
                 if (engine.isTimerRunning()) {
@@ -655,7 +608,7 @@ public class GUIframe implements Engine.EngineClient {
         buttonsPanel.add(Box.createRigidArea(new Dimension(5, 10)));
         buttonsPanel.add(immediateFilter);
         immediateFilter.addActionListener(new ActionListener() {
-            @Override
+
             public void actionPerformed(ActionEvent e) {
                 engine.stopTimer();
                 pauseFilter.doClick();
@@ -680,12 +633,24 @@ public class GUIframe implements Engine.EngineClient {
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setResizable(true);
         window.setVisible(true);
-        
+
         if (Main.DEBUG) {
             image = ImageIO.read(new FileInputStream("sample.jpg"));
             LoadImage(image);
             System.out.println(String.format("Size is width: %d height: %d", image.getWidth(), image.getHeight()));
         }
+    }
+
+    private void LoadImage(BufferedImage image) {
+        canvas.setSize(image.getWidth(), image.getHeight());
+        canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+        engine.setImage(image);
+        dotImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        startFilter.doClick();
+        pauseFilter.doClick();
+        showImage = true;
+        clearDotImage();
+        canvas.repaint();
     }
 
     public void onTimerTick() {
