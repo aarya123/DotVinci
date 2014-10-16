@@ -238,22 +238,7 @@ public class GUIframe implements Engine.EngineClient {
         });
 
         //uncheck all other radio buttons when the user checks a radio button
-        noFilter.addChangeListener(new ChangeListener() {
-
-
-            public void stateChanged(ChangeEvent e) {
-                if (noFilter.isSelected()) {
-                    sepiaFilter.setSelected(false);
-                    grayscaleFilter.setSelected(false);
-                    negativeFilter.setSelected(false);
-                    engine.setFilter(Engine.Filter.NORMAL);
-                }
-                if (Main.DEBUG) {
-                    System.out.println("NORMAL");
-                    System.out.println(engine.getFilter());
-                }
-            }
-        });
+        // bugbug
         sepiaFilter.addChangeListener(new ChangeListener() {
 
 
@@ -388,16 +373,6 @@ public class GUIframe implements Engine.EngineClient {
 
         //prevent user from unchecking a radio button
         circleShape.setSelected(true);
-        circleShape.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
-                if (!circleShape.isSelected()) {
-                    circleShape.setSelected(true);
-                    squareShape.setSelected(false);
-                }
-            }
-        });
-
         squareShape.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 if (!squareShape.isSelected()) {
@@ -408,25 +383,13 @@ public class GUIframe implements Engine.EngineClient {
         });
 
         //uncheck all other radio buttons when the user checks a radio button
-        circleShape.addChangeListener(new ChangeListener() {
-
-
-            public void stateChanged(ChangeEvent e) {
-                if (circleShape.isSelected()) {
-                    engine.setShape(Engine.Shape.Circle);
-                    squareShape.setSelected(false);
-                }
-                if (Main.DEBUG) {
-                    System.out.println("CIRCLE SHAPE");
-                }
-            }
-        });
+        //bugbug
         squareShape.addChangeListener(new ChangeListener() {
 
 
             public void stateChanged(ChangeEvent e) {
                 if (squareShape.isSelected()) {
-                    engine.setShape(Engine.Shape.Square);
+                    //bugbug
                     circleShape.setSelected(false);
                 }
                 if (Main.DEBUG) {
@@ -495,7 +458,8 @@ public class GUIframe implements Engine.EngineClient {
 
         // buttonsPanel.add(Box.createRigidArea(new Dimension(800, 10)));
         buttonsPanel.add(startFilter);
-        startFilter.addActionListener(new ActionListener() {
+        //bugbug
+        pauseFilter.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 if (image == null) {
@@ -508,18 +472,19 @@ public class GUIframe implements Engine.EngineClient {
                     clearDotImage();
                 }
                 showImage = false;
-                pauseFilter.setVisible(true);
-                startFilter.setVisible(false);
+                pauseFilter.setVisible(false);
+                startFilter.setVisible(true);
             }
         });
         buttonsPanel.add(pauseFilter);
-        pauseFilter.setVisible(false);
-        startFilter.setVisible(true);
-        pauseFilter.addActionListener(new ActionListener() {
+        //bugbug
+        pauseFilter.setVisible(true);
+        startFilter.setVisible(false);
+        startFilter.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                pauseFilter.setVisible(false);
-                startFilter.setVisible(true);
+                pauseFilter.setVisible(true);
+                startFilter.setVisible(false);
                 engine.stopTimer();
             }
         });
@@ -572,6 +537,7 @@ public class GUIframe implements Engine.EngineClient {
 
             public void actionPerformed(ActionEvent e) {
                 engine.stopTimer();
+                //bugbug
                 pauseFilter.doClick();
                 if (!engine.isTimerRunning()) {
                     clearDotImage();
@@ -592,7 +558,8 @@ public class GUIframe implements Engine.EngineClient {
         window.add(mainPanel);
 
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.setResizable(true);
+        //bugbug
+        window.setResizable(false);
         window.setVisible(true);
 
         if (Main.DEBUG) {
