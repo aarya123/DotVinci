@@ -75,9 +75,11 @@ public class Engine {
             startTime = System.currentTimeMillis();
             long defaultDelta = 500;
             double doubleSliderVal = (double) sliderVal;
-            doubleSliderVal /= 100.0;
+            //mg bug
+            doubleSliderVal /= 5.0;
             doubleSliderVal = 1 - doubleSliderVal;
-            dotTimeDelta = (long) (defaultDelta * doubleSliderVal);
+            //mg bug
+            dotTimeDelta = defaultDelta;
             if (Main.DEBUG) {
                 System.out.println("dotTimeDelta " + dotTimeDelta);
             }
@@ -102,11 +104,13 @@ public class Engine {
 
     public double getPixelSize() {
 //        System.out.println("pixelSize = "+(pixelSize * 50 + 1));
-        return pixelSize;
+        //mg bug
+            return pixelSize / 2;
     }
 
     public void setPixelSize(double pixelSize) {
-        this.pixelSize = pixelSize;
+        //mg bug
+        this.pixelSize = pixelSize * 2;
     }
 
     public void setShape(Shape shape) {
@@ -144,22 +148,18 @@ public class Engine {
 
     public void drawOutputFast(final Graphics g) {
         if (hasImage()) {
-            new Thread() {
-
-                public void run() {
-                    for (int i = 0; i < FAST_OUTPUT_ITERATIONS; i++) {
-                        drawDot(g);
-                    }
-                    engineClient.forceRedraw();
-
-                }
-            }.start();
+            //mg bug
+            for (int i = 0; i < FAST_OUTPUT_ITERATIONS; i++) {
+                drawDot(g);
+            }
+            engineClient.forceRedraw();
         }
     }
 
     public void drawImage(Graphics g) {
         if (hasImage()) {
-            g.drawImage(image, 0, 0, null);
+            //mg bug
+            g.drawImage(image, 50, 50, null);
         }
     }
 
@@ -184,8 +184,10 @@ public class Engine {
 
         public void run() {
 
-            while (!isInterrupted()) {
-                boolean canTick = (System.currentTimeMillis() - lastExec) >= dotTimeDelta;
+            boolean canTick = true;
+            //mg bug
+            while (canTick) {
+                canTick = (System.currentTimeMillis() - lastExec) >= dotTimeDelta;
                 if (canTick) {
                     lastExec = System.currentTimeMillis();
                     engineClient.onTimerTick();

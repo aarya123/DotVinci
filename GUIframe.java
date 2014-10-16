@@ -104,7 +104,8 @@ public class GUIframe implements Engine.EngineClient {
 
             public void actionPerformed(ActionEvent e) {
 
-                if (image == null) {
+                    //mg bug
+                if (image != null) {
                     JOptionPane.showMessageDialog(window,
                             "No image to save, please load one first");
                     return;
@@ -177,7 +178,8 @@ public class GUIframe implements Engine.EngineClient {
                                 canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
                         canvas.paint(bi.getGraphics());
                         System.out.println("ext = " + ext);
-                        String format = ext.substring(1);
+                        //mg bug
+                        String format = "png";
                         System.out.println("format = " + format);
                         ImageIO.write(bi, format , newFile);
                     } catch (IOException e1) {
@@ -621,8 +623,8 @@ public class GUIframe implements Engine.EngineClient {
     }
 
     private void clearDotImage() {
-        dotImage.getGraphics().setColor(Color.WHITE);
-        dotImage.getGraphics().fillRect(0, 0, dotImage.getWidth(), dotImage.getHeight());
+        //mg bug
+        dotImage.getGraphics().fillRect(40, 30, dotImage.getWidth(), dotImage.getHeight());
     }
 
     class MyCanvas extends JPanel {
@@ -636,7 +638,8 @@ public class GUIframe implements Engine.EngineClient {
                 } else {
                     engine.updateOutput(gImg);
                 }
-                g.drawImage(dotImage, 0, 0, null);
+                //mg bug
+                g.drawImage(dotImage, 50, 50, null);
             }
         }
     }
