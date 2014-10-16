@@ -383,7 +383,6 @@ public class GUIframe implements Engine.EngineClient {
         final JRadioButton circleShape = new JRadioButton("Circle");
         noFilter.setSelected(true);
         final JRadioButton squareShape = new JRadioButton("Square");
-        final JRadioButton triangleShape = new JRadioButton("Triangle");
 
         //prevent user from unchecking a radio button
         circleShape.setSelected(true);
@@ -393,7 +392,6 @@ public class GUIframe implements Engine.EngineClient {
                 if (!circleShape.isSelected()) {
                     circleShape.setSelected(true);
                     squareShape.setSelected(false);
-                    triangleShape.setSelected(false);
                 }
             }
         });
@@ -403,22 +401,9 @@ public class GUIframe implements Engine.EngineClient {
                 if (!squareShape.isSelected()) {
                     squareShape.setSelected(true);
                     circleShape.setSelected(false);
-                    triangleShape.setSelected(false);
                 }
             }
         });
-
-        triangleShape.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
-                if (!triangleShape.isSelected()) {
-                    triangleShape.setSelected(true);
-                    circleShape.setSelected(false);
-                    squareShape.setSelected(false);
-                }
-            }
-        });
-
 
         //uncheck all other radio buttons when the user checks a radio button
         circleShape.addChangeListener(new ChangeListener() {
@@ -428,7 +413,6 @@ public class GUIframe implements Engine.EngineClient {
                 if (circleShape.isSelected()) {
                     engine.setShape(Engine.Shape.Circle);
                     squareShape.setSelected(false);
-                    triangleShape.setSelected(false);
                 }
                 if (Main.DEBUG) {
                     System.out.println("CIRCLE SHAPE");
@@ -442,24 +426,9 @@ public class GUIframe implements Engine.EngineClient {
                 if (squareShape.isSelected()) {
                     engine.setShape(Engine.Shape.Square);
                     circleShape.setSelected(false);
-                    triangleShape.setSelected(false);
                 }
                 if (Main.DEBUG) {
                     System.out.println("SQUARE SHAPE");
-                }
-            }
-        });
-        triangleShape.addChangeListener(new ChangeListener() {
-
-
-            public void stateChanged(ChangeEvent e) {
-                if (triangleShape.isSelected()) {
-                    engine.setShape(Engine.Shape.Triangle);
-                    squareShape.setSelected(false);
-                    circleShape.setSelected(false);
-                }
-                if (Main.DEBUG) {
-                    System.out.println("TRIANGLE SHAPE");
                 }
             }
         });
@@ -513,7 +482,6 @@ public class GUIframe implements Engine.EngineClient {
         shapePanel.add(Box.createRigidArea(new Dimension(10, 20)));
         shapePanel.add(circleShape);
         shapePanel.add(squareShape);
-        shapePanel.add(triangleShape);
         tweakablesPanel.add(shapePanel);
         tweakablesPanel.add(Box.createRigidArea(new Dimension(5, 10)));
 

@@ -121,9 +121,7 @@ public class Engine {
         y = (int) (pixel.getY() - getPixelSize() / 2);
         x = x < 0 ? 0 : x;
         y = y < 0 ? 0 : y;
-        if (shape == Shape.Triangle) {
-
-        } else if (shape == Shape.Square) {
+        if (shape == Shape.Square) {
             g.fillRect(x, y, (int) getPixelSize(), (int) getPixelSize());
         } else {
             g.fillOval(x, y, (int) getPixelSize(), (int) getPixelSize());
@@ -159,7 +157,7 @@ public class Engine {
     }
 
     enum Shape {
-        Circle, Square, Triangle
+        Circle, Square
     }
 
     public enum Filter {
