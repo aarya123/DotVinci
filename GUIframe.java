@@ -58,7 +58,11 @@ public class GUIframe implements Engine.EngineClient {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                BufferedImage bi = new BufferedImage(
+  
+  		/* defect 049 lack of code, image can only be shared if it is loaded */
+
+
+  		BufferedImage bi = new BufferedImage(
                                 canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
                                 canvas.paint(bi.getGraphics());
                                 try{
@@ -89,9 +93,9 @@ public class GUIframe implements Engine.EngineClient {
 			        Object[] ob = {from_email_label, from_email, from_pass_label,from_pass };
 				        int result = JOptionPane.showConfirmDialog(null, ob, "Gmail Sign In", JOptionPane.OK_CANCEL_OPTION);
 					 
-  if (result == JOptionPane.OK_OPTION) {
+  if (result != JOptionPane.OK_OPTION) {
 			              //Here is some validation code
-                    GmailShare email = new GmailShare(to_email, from_email.getText(), from_pass.getText(), "Check out my drawing on DotVinci!", ".temp.jpg");
+                    GmailShare email = new GmailShare(to_email, from_email.getText(), from_pass.getText(), "Check out my drawing on DotVinci!", ".temp.png");
                     email.share();
 		    }
                 }

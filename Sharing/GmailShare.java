@@ -24,7 +24,7 @@ public class GmailShare implements ShareInterface{
 	static String GMAIL_SMTP_URL = "smtp.googlemail.com";
 	static int GMAIL_SMTP_PORT = 465;
 	
-	String to,from, message,imagePath;
+	String to,from, message,imagePath = " ";
 	// from gmail account password
 	String fromPassword;
 	
@@ -37,7 +37,10 @@ public class GmailShare implements ShareInterface{
 	 *
 	 */
 		this.to=from;
-	    this.imagePath = imagePath;
+	  /*
+	   * BUG 047 image path not set 
+	   *
+	   */
 		this.message = message;
 		this.from = to;
 		this.fromPassword=fromPassword;
