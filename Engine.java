@@ -76,7 +76,7 @@ public class Engine {
             long defaultDelta = 500;
             double doubleSliderVal = (double) sliderVal;
             //mg bug
-            doubleSliderVal /= 5.0;
+            doubleSliderVal /= 100.0;
             doubleSliderVal = 1 - doubleSliderVal;
             //mg bug
             dotTimeDelta = defaultDelta;
