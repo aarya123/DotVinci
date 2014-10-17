@@ -136,7 +136,7 @@ public class GUIframe implements Engine.EngineClient {
                     try {
                     	
                     	if(image == null){														/*Defect - 006*/
-                    		image = ImageIO.read(new FileInputStream("sample.jpeg")); 			/* Defect - 003*/
+                    		image = ImageIO.read(new FileInputStream("doge.jpeg")); 			/* Defect - 003*/
                     		LoadImage(image);
                     	}
                     } catch (IOException e1) {
@@ -599,7 +599,7 @@ public class GUIframe implements Engine.EngineClient {
         window.setVisible(true);
 
         if (Main.DEBUG) {
-            image = ImageIO.read(new FileInputStream("sample.jpg"));
+            image = ImageIO.read(new FileInputStream("doge.jpeg"));
             LoadImage(image);
             System.out.println(String.format("Size is width: %d height: %d", image.getWidth(), image.getHeight()));
         }
