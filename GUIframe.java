@@ -60,9 +60,10 @@ public class GUIframe implements Engine.EngineClient {
             {
   
   		/* defect 049 lack of code, image can only be shared if it is loaded */
+        
+    
+    BufferedImage bi = new BufferedImage(
 
-
-  		BufferedImage bi = new BufferedImage(
                                 canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
                                 canvas.paint(bi.getGraphics());
                                 try{
