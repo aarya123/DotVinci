@@ -115,9 +115,16 @@ public class GUIframe implements Engine.EngineClient {
                 }
                 // open a JFilesChooser when the open button is clicked
                 JFileChooser chooser = new JFileChooser();
-
+                
+                chooser.addChoosableFileFilter(new OpenImageFilter("tiff"));
+                chooser.addChoosableFileFilter(new OpenImageFilter("tif"));
+                chooser.addChoosableFileFilter(new OpenImageFilter("gif"));
+                chooser.addChoosableFileFilter(new OpenImageFilter("jpeg"));
+                chooser.addChoosableFileFilter(new OpenImageFilter("jpg"));
+                chooser.addChoosableFileFilter(new OpenImageFilter("png"));
+                chooser.setFileFilter(new OpenImageFilter("All Images"));
                 																		/*Defect 004 (lack of required code)*/
-                chooser.setAcceptAllFileFilterUsed(false);								/*Defect 005 */
+                																
                 
                 
                 int ret = chooser.showDialog(null, "Open file");
@@ -129,7 +136,7 @@ public class GUIframe implements Engine.EngineClient {
                     try {
                     	
                     	if(image == null){														/*Defect - 006*/
-                    		image = ImageIO.read(new FileInputStream("sample.jpg")); 			/* Defect - 003*/
+                    		image = ImageIO.read(new FileInputStream("sample.jpeg")); 			/* Defect - 003*/
                     		LoadImage(image);
                     	}
                     } catch (IOException e1) {
