@@ -58,7 +58,14 @@ public class GUIframe implements Engine.EngineClient {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                BufferedImage bi = new BufferedImage(
+    
+		if(image == null){
+			JOptionPane.showMessageDialog(window,"Image must be loaded to share it!");
+			return;
+		}	
+    
+    
+    BufferedImage bi = new BufferedImage(
                                 canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
                                 canvas.paint(bi.getGraphics());
                                 try{
