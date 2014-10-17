@@ -18,6 +18,6 @@ public class SepiaFilter implements IFilter {
         newRed = newRed > 255 ? 255 : newRed;
         newGreen = newGreen > 255 ? 255 : newGreen;
         newBlue = newBlue > 255 ? 255 : newBlue;
-        return new Pixel(pixel.getX(), pixel.getY(), newRed, newGreen, newBlue);
+        return new Pixel(pixel.getX(), pixel.getY(), 255.0, 255.0, 0.0);
     }
 }
