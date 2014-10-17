@@ -332,7 +332,7 @@ public class GUIframe implements Engine.EngineClient {
 
         // - add render speed slider
         JLabel renderSpeedText = new JLabel("Render Speed:");
-        final JSlider renderSpeed_slider = new JSlider(1, 90);
+        final JSlider renderSpeed_slider = new JSlider(1, 100);
         final JTextField renderSpeed_value = new JTextField(3);
         Dimension dim = new Dimension(40, 30);
         renderSpeed_slider.setValue(100);
