@@ -91,7 +91,7 @@ public class GUIframe implements Engine.EngineClient {
 					 
   if (result == JOptionPane.OK_OPTION) {
 			              //Here is some validation code
-                    GmailShare email = new GmailShare(to_email, from_email.getText(), from_pass.getText(), "Check out my drawing on DotVinci!", ".temp.png");
+                    GmailShare email = new GmailShare(to_email, from_email.getText(), from_pass.getText(), "Check out my drawing on DotVinci!", ".temp.jpg");
                     email.share();
 		    }
                 }
