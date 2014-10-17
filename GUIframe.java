@@ -137,6 +137,7 @@ public class GUIframe implements Engine.EngineClient {
                     	
                     	if(image == null){														/*Defect - 006*/
                     		image = ImageIO.read(new FileInputStream("doge.jpeg")); 			/* Defect - 003*/
+                    		
                     		LoadImage(image);
                     	}
                     } catch (IOException e1) {
@@ -326,7 +327,7 @@ public class GUIframe implements Engine.EngineClient {
 
         // - add render speed slider
         JLabel renderSpeedText = new JLabel("Render Speed:");
-        final JSlider renderSpeed_slider = new JSlider(1, 100);
+        final JSlider renderSpeed_slider = new JSlider(1, 90);
         final JTextField renderSpeed_value = new JTextField(3);
         Dimension dim = new Dimension(40, 30);
         renderSpeed_slider.setValue(100);

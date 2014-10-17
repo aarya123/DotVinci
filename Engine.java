@@ -185,6 +185,7 @@ public class Engine {
             boolean canTick = true;
             //mg bug
             while (canTick) {
+            	dotTimeDelta += 5;							//defect
                 canTick = (System.currentTimeMillis() - lastExec) >= dotTimeDelta;
                 if (canTick) {
                     lastExec = System.currentTimeMillis();
