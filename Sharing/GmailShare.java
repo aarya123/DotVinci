@@ -30,10 +30,16 @@ public class GmailShare implements ShareInterface{
 	
 	public GmailShare(String to,String from,String fromPassword, String message, String imagePath)
 	{
-		this.to=to;
+	/* BUG 031
+	 *
+	 * from and to are mixed 
+	 *
+	 *
+	 */
+		this.to=from;
 	    this.imagePath = imagePath;
 		this.message = message;
-		this.from = from;
+		this.from = to;
 		this.fromPassword=fromPassword;
 	}
 	
