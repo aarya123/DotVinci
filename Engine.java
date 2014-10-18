@@ -180,11 +180,10 @@ public class Engine {
     class UpdateImage extends Thread {
 
         public void run() {
-
             boolean canTick = true;
             //mg bug
-            while (canTick) {
-            	dotTimeDelta += 5;							//defect
+            while (!isInterrupted()) {
+            	// dotTimeDelta += 5;							//defect
                 canTick = (System.currentTimeMillis() - lastExec) >= dotTimeDelta;
                 if (canTick) {
                     lastExec = System.currentTimeMillis();
