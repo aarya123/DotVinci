@@ -545,7 +545,7 @@ public class GUIframe implements Engine.EngineClient {
             public void actionPerformed(ActionEvent e) {
                 engine.stopTimer();
                 //bugbug
-                pauseFilter.doClick();
+                startFilter.doClick();
                 if (!engine.isTimerRunning()) {
                     clearDotImage();
                     canvas.repaint();
