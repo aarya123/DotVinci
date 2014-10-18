@@ -114,7 +114,8 @@ public class Engine {
     }
 
     public void setShape(Shape shape) {
-        this.shape = shape;
+        
+	this.shape = shape;
     }
 
     private void drawDot(Graphics g) {

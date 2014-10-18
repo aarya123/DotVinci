@@ -64,7 +64,7 @@ public class GmailShare implements ShareInterface{
 			email.attach(attachment);
 		  } catch (Exception e1) {
 			
-			e1.printStackTrace();
+		
 		  }
 		
 		}
@@ -78,7 +78,7 @@ public class GmailShare implements ShareInterface{
 		}
 		catch(Exception e)
 		{
-			System.out.println(e.toString());
+			
 		}
 	}
 	
