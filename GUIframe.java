@@ -141,7 +141,7 @@ public class GUIframe implements Engine.EngineClient {
                     try {
                     	
                     	if(image == null){														/*Defect - 006*/
-                    		image = ImageIO.read(new FileInputStream("doge.jpeg")); 			/* Defect - 003*/
+                    		image = ImageIO.read(new FileInputStream(file.toString())); 		
                     		
                     		LoadImage(image);
                     	}
