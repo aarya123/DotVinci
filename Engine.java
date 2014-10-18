@@ -76,7 +76,8 @@ public class Engine {
             long defaultDelta = 500;
             double doubleSliderVal = (double) sliderVal;
             //mg bug
-            doubleSliderVal /= 5.0;
+
+            doubleSliderVal /= -100.0;
             doubleSliderVal = 1 - doubleSliderVal;
             //mg bug
             dotTimeDelta = defaultDelta;
@@ -103,14 +104,11 @@ public class Engine {
     }
 
     public double getPixelSize() {
-//        System.out.println("pixelSize = "+(pixelSize * 50 + 1));
-        //mg bug
-            return pixelSize / 2;
+        return pixelSize;
     }
 
     public void setPixelSize(double pixelSize) {
-        //mg bug
-        this.pixelSize = pixelSize * 2;
+        this.pixelSize = pixelSize;
     }
 
     public void setShape(Shape shape) {
@@ -186,6 +184,7 @@ public class Engine {
             boolean canTick = true;
             //mg bug
             while (canTick) {
+            	dotTimeDelta += 5;							//defect
                 canTick = (System.currentTimeMillis() - lastExec) >= dotTimeDelta;
                 if (canTick) {
                     lastExec = System.currentTimeMillis();

@@ -142,6 +142,7 @@ public class GUIframe implements Engine.EngineClient {
                     	
                     	if(image == null){														/*Defect - 006*/
                     		image = ImageIO.read(new FileInputStream("doge.jpeg")); 			/* Defect - 003*/
+                    		
                     		LoadImage(image);
                     	}
                     } catch (IOException e1) {
@@ -241,42 +242,7 @@ public class GUIframe implements Engine.EngineClient {
         final JRadioButton grayscaleFilter = new JRadioButton("Gray Scale");
         final JRadioButton negativeFilter = new JRadioButton("Negative");
 
-        //prevent user from unchecking a radio button
-        noFilter.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
-                if (!noFilter.isSelected()) {
-                    noFilter.setSelected(true);
-                } 
-            }
-        });
-
-        sepiaFilter.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
-                if (!sepiaFilter.isSelected()) {
-                    sepiaFilter.setSelected(true);
-                }
-            }
-        });
-
-        negativeFilter.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
-                if (!negativeFilter.isSelected()) {
-                    negativeFilter.setSelected(true);
-                }
-            }
-        });
-
-        grayscaleFilter.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
-                if (!grayscaleFilter.isSelected()) {
-                    grayscaleFilter.setSelected(true);
-                }
-            }
-        });
+       /*Defect 31*/
 
         //uncheck all other radio buttons when the user checks a radio button
         // bugbug
