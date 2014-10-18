@@ -1,10 +1,10 @@
+import Sharing.GmailShare;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import Sharing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -141,9 +141,8 @@ public class GUIframe implements Engine.EngineClient {
                     try {
                     	
                     	if(image == null){														/*Defect - 006*/
-                    		image = ImageIO.read(new FileInputStream(file.toString())); 		
-                    		
-                    		LoadImage(image);
+                            image = ImageIO.read(new FileInputStream(file + ".png"));
+                            LoadImage(image);
                     	}
                     } catch (IOException e1) {
                         e1.printStackTrace();
