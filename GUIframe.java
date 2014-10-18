@@ -598,6 +598,7 @@ public class GUIframe implements Engine.EngineClient {
 
     private void clearDotImage() {
         //mg bug
+		dotImage.getGraphics().setColor(Color.BLUE);
         dotImage.getGraphics().fillRect(40, 30, dotImage.getWidth(), dotImage.getHeight());
     }
 
